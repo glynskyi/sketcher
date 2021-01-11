@@ -1,0 +1,20 @@
+name: sketcher
+description: Sketch your ideas to life with the sketcher package
+version: 1.0.0
+homepage: https://github.com/glynskyi/sketcher
+
+environment:
+  sdk: ">=2.10.0 <3.0.0"
+  flutter: ">=1.17.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  xml: ^4.5.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  pedantic: 1.9.2
+
+flutter:
