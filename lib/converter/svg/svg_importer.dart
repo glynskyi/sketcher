@@ -2,7 +2,6 @@ import 'package:flutter/painting.dart';
 import 'package:sketcher/converter/importer.dart';
 import 'package:sketcher/models/stroke.dart';
 import 'package:sketcher/sketcher.dart';
-import 'package:sketcher/ui/static_painter.dart';
 import 'package:xml/xml.dart';
 
 class SvgImporter implements Importer {
@@ -29,7 +28,7 @@ class SvgImporter implements Importer {
       final strokeColor = _svgColorToFlutterColor(stroke).withOpacity(strokeOpacity);
       strokes.add(Stroke(points, strokeColor, strokeWidth));
     }
-    controller.init(StaticPainter(strokes));
+    controller.init(strokes);
   }
 
   Color _svgColorToFlutterColor(String code) {

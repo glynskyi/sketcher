@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:sketcher/models/stroke.dart';
+import 'package:sketcher/models/stroke_style.dart';
 import 'package:sketcher/ui/bezier_path.dart';
 
 class ReactivePainter extends ChangeNotifier implements CustomPainter {
-  Color strokeColor;
+  // Color strokeColor;
   final _strokes = <Stroke>[];
-  double activeWeight = 1.5;
-  Color activeColor = Colors.green;
+  // double activeWeight = 1.5;
+  // Color activeColor = Colors.green;
+  final StrokeStyle _strokeStyle;
 
-  ReactivePainter(this.strokeColor);
+  ReactivePainter(this._strokeStyle);
 
   List<Stroke> get strokes => _strokes;
 
@@ -16,7 +18,7 @@ class ReactivePainter extends ChangeNotifier implements CustomPainter {
   bool hitTest(Offset position) => null;
 
   void startStroke(Offset position) {
-    _strokes.add(Stroke([position], activeColor, activeWeight));
+    _strokes.add(Stroke([position], _strokeStyle.color.withOpacity(_strokeStyle.opacity), _strokeStyle.weight));
     notifyListeners();
   }
 
@@ -26,8 +28,9 @@ class ReactivePainter extends ChangeNotifier implements CustomPainter {
     notifyListeners();
   }
 
-  void endStroke() {
+  Stroke endStroke() {
     notifyListeners();
+    return _strokes.last;
   }
 
   static final strokePaint = Paint()

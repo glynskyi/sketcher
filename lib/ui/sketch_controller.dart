@@ -2,16 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:sketcher/models/sketch_tool.dart';
 import 'package:sketcher/models/stroke.dart';
 import 'package:sketcher/models/stroke_style.dart';
-import 'package:sketcher/ui/reactive_painter.dart';
+import 'package:sketcher/ui/operations/operation.dart';
+import 'package:sketcher/ui/sketch_layer.dart';
 import 'package:sketcher/ui/static_painter.dart';
 
 class SketchController extends ChangeNotifier {
+  final _layers = <SketchLayer>[];
+  final _undoStack = <Operation>[];
+  final _redoStack = <Operation>[];
   SketchTool _activeTool;
   StrokeStyle _pencilStyle;
   StrokeStyle _highlighterStyle;
-  final _redoQueue = <Stroke>[];
-  ReactivePainter reactivePainter = ReactivePainter(const Color.fromRGBO(255, 255, 255, 1.0));
-  List<StaticPainter> staticPainters = [];
+  int _lastLayerId = 0;
+
+  List<SketchLayer> get layers => _layers;
 
   SketchController({
     StrokeStyle pencilStyle,
@@ -21,17 +25,17 @@ class SketchController extends ChangeNotifier {
     _highlighterStyle = highlighterStyle ?? StrokeStyle(0.3, Colors.black, 18);
   }
 
+  int get nextLayerId => ++_lastLayerId;
+
   SketchTool get activeTool => _activeTool;
 
   StrokeStyle get pencilConfig => _pencilStyle;
 
   StrokeStyle get highlightConfig => _highlighterStyle;
 
-  bool get isRedoAvailable => _redoQueue.isNotEmpty;
+  bool get isRedoAvailable => _redoStack.isNotEmpty;
 
-  bool get isUndoAvailable {
-    return staticPainters.any((painter) => painter.strokes.isNotEmpty) || reactivePainter.strokes.isNotEmpty;
-  }
+  bool get isUndoAvailable => _undoStack.isNotEmpty;
 
   void setActiveTool(SketchTool tool) {
     _activeTool = tool;
@@ -39,22 +43,28 @@ class SketchController extends ChangeNotifier {
   }
 
   void undo() {
-    if (reactivePainter.strokes.isEmpty) {
-      final staticPainter = staticPainters.removeLast();
-      final kanjiStokes = staticPainter.strokes;
-      _redoQueue.add(kanjiStokes.removeLast());
-      reactivePainter.strokes.addAll(kanjiStokes);
-    } else {
-      _redoQueue.add(reactivePainter.strokes.removeLast());
-    }
-    notifyListeners();
+    final operation = _undoStack.removeLast();
+    _redoStack.add(operation);
+    operation.undo(this);
+    //   if (reactivePainter.strokes.isEmpty) {
+    //     final staticPainter = staticPainters.removeLast();
+    //     final kanjiStokes = staticPainter.strokes;
+    //     _redoQueue.add(kanjiStokes.removeLast());
+    //     reactivePainter.strokes.addAll(kanjiStokes);
+    //   } else {
+    //     _redoQueue.add(reactivePainter.strokes.removeLast());
+    //   }
+    //   notifyListeners();
   }
 
   void redo() {
-    if (_redoQueue.isNotEmpty) {
-      reactivePainter.strokes.add(_redoQueue.removeLast());
-      notifyListeners();
-    }
+    final operation = _redoStack.removeLast();
+    _undoStack.add(operation);
+    operation.redo(this);
+    //   if (_redoQueue.isNotEmpty) {
+    //     reactivePainter.strokes.add(_redoQueue.removeLast());
+    //     notifyListeners();
+    //   }
   }
 
   void setActiveColor(Color color) {
@@ -94,22 +104,30 @@ class SketchController extends ChangeNotifier {
   }
 
   void notify() {
-    return notifyListeners();
-  }
-
-  bool commitStrokes() {
-    _redoQueue.clear();
-    if (reactivePainter.strokes.isNotEmpty) {
-      staticPainters.add(StaticPainter(List.of(reactivePainter.strokes)));
-      reactivePainter.strokes.clear();
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  void init(StaticPainter staticPainter) {
-    staticPainters.add(staticPainter);
+    print("notify()");
     notifyListeners();
+  }
+
+  // bool commitStrokes() {
+  //   _redoQueue.clear();
+  //   if (reactivePainter.strokes.isNotEmpty) {
+  //     staticPainters.add(StaticPainter(List.of(reactivePainter.strokes)));
+  //     reactivePainter.strokes.clear();
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // }
+
+  void init(List<Stroke> strokes) {
+    final layer = SketchLayer(nextLayerId, StaticPainter(strokes));
+    layers.add(layer);
+    notifyListeners();
+  }
+
+  void commitOperation(Operation operation) {
+    _undoStack.add(operation);
+    _redoStack.clear();
+    operation.redo(this);
   }
 }

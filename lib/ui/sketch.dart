@@ -22,8 +22,6 @@ class Sketch extends StatefulWidget {
 
 class _SketchState extends State<Sketch> {
   Widget touch;
-  CustomPaint canvas;
-
   SketchTool _activeTool = SketchTool.None;
   ToolController _toolController;
 
@@ -33,11 +31,11 @@ class _SketchState extends State<Sketch> {
   void panStart(PointerDownEvent details) {
     initialPointer = details.pointer;
     if (_activeTool == SketchTool.Pencil || _activeTool == SketchTool.Highlighter) {
-      _toolController = PencilController(widget.controller, () => setState(() {}));
+      _toolController = PencilController(widget.controller, () => widget.controller.notify());
       _toolController.panStart(details);
     }
     if (_activeTool == SketchTool.Eraser) {
-      _toolController = EraserController(widget.controller, () => setState(() {}));
+      _toolController = EraserController(widget.controller, () => widget.controller.notify());
       _toolController?.panStart(details);
     }
   }
@@ -86,8 +84,8 @@ class _SketchState extends State<Sketch> {
       _activeTool = widget.controller.activeTool;
       final config = widget.controller.activeToolStyle;
       if (config != null) {
-        widget.controller.reactivePainter.activeWeight = config.weight;
-        widget.controller.reactivePainter.activeColor = config.color.withOpacity(config.opacity);
+        // widget.controller.reactivePainter.activeWeight = config.weight;
+        // widget.controller.reactivePainter.activeColor = config.color.withOpacity(config.opacity);
       }
     });
   }
@@ -100,18 +98,19 @@ class _SketchState extends State<Sketch> {
 
   @override
   Widget build(BuildContext context) {
-    canvas = CustomPaint(
-      painter: widget.controller.reactivePainter,
-      child: _activeTool == SketchTool.None ? null : touch,
-    );
     return Transform.translate(
       offset: Offset(0, -_offset),
-      child: Stack(children: [
-//      ...staticPainters.map((painter) => CustomPaint(painter: painter)),
-        ...RepaintBoundary.wrapAll(
-            widget.controller.staticPainters.map((painter) => CustomPaint(painter: painter)).toList(growable: false)),
-        canvas,
-      ]),
+      child: Stack(
+        children: [
+          ...RepaintBoundary.wrapAll(widget.controller.layers
+              .map((layer) => CustomPaint(key: ValueKey(layer.id), painter: layer.painter))
+              .toList(growable: false)),
+          CustomPaint(
+            painter: _toolController?.toolPainter,
+            child: _activeTool == SketchTool.None ? null : touch,
+          ),
+        ],
+      ),
     );
   }
 }

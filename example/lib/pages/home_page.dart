@@ -14,16 +14,15 @@ class _HomePageState extends State<HomePage> {
   final _sketchController = SketchController();
   final _scrollController = ScrollController();
 
-  void _selectPencil() {
-    _sketchController.setActiveTool(SketchTool.Pencil);
-  }
-
-  void _selectHighlighter() {
-    _sketchController.setActiveTool(SketchTool.Highlighter);
-  }
-
   void _selectColor(Color color) {
     _sketchController.setActiveColor(color);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    print("initState()");
+    _sketchController.addListener(() => setState(() {}));
   }
 
   @override
@@ -43,8 +42,9 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       body: Stack(
+        fit: StackFit.expand,
         children: [
-          Expanded(child: _buildSketch()),
+          _buildSketch(),
           Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -53,46 +53,49 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ),
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: _buildBottomBar(),
+          ),
         ],
       ),
-      floatingActionButton: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
+    );
+  }
+
+  Widget _buildBottomBar() {
+    return Material(
+      elevation: 10,
+      child: Row(
         children: [
-          const SizedBox(width: 32),
-          FloatingActionButton(
+          IconButton(
+            icon: const Icon(Icons.palette, color: Colors.redAccent),
             onPressed: () => _selectColor(Colors.redAccent),
-            tooltip: "Red",
-            backgroundColor: Colors.redAccent,
-            child: const Icon(Icons.palette),
           ),
-          const SizedBox(width: 16),
-          FloatingActionButton(
+          IconButton(
+            icon: const Icon(Icons.palette, color: Colors.lightGreenAccent),
             onPressed: () => _selectColor(Colors.lightGreenAccent),
-            tooltip: "Green",
-            backgroundColor: Colors.lightGreenAccent,
-            child: const Icon(Icons.palette),
           ),
-          const SizedBox(width: 16),
-          FloatingActionButton(
+          IconButton(
+            icon: const Icon(Icons.palette, color: Colors.black),
             onPressed: () => _selectColor(Colors.black),
-            tooltip: "Black",
-            backgroundColor: Colors.black87,
-            child: const Icon(Icons.palette),
           ),
           const Spacer(),
-          FloatingActionButton(
-            onPressed: _selectHighlighter,
-            tooltip: "Highlighter",
-            child: const Icon(Icons.highlight),
+          IconButton(
+            icon: const Icon(Icons.approval),
+            onPressed: () => _sketchController.setActiveTool(SketchTool.Eraser),
           ),
-          const SizedBox(width: 16),
-          FloatingActionButton(
-            onPressed: _selectPencil,
-            tooltip: "Pencil",
-            child: const Icon(Icons.edit),
+          IconButton(
+            icon: const Icon(Icons.highlight),
+            onPressed: () => _sketchController.setActiveTool(SketchTool.Highlighter),
+          ),
+          IconButton(
+            icon: const Icon(Icons.edit),
+            onPressed: () => _sketchController.setActiveTool(SketchTool.Pencil),
           ),
         ],
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),
     );
   }
 

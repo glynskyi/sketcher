@@ -9,13 +9,10 @@ class SvgExporter implements Exporter {
     final builder = XmlBuilder();
     builder.processing('xml', 'version="1.0"');
     builder.element("svg", nest: () {
-      for (var painter in controller.staticPainters) {
-        for (var stroke in painter.strokes) {
+      for (var layer in controller.layers) {
+        for (var stroke in layer.painter.strokes) {
           _toPath(builder, stroke);
         }
-      }
-      for (var stroke in controller.reactivePainter.strokes) {
-        _toPath(builder, stroke);
       }
     });
     final svg = builder.buildDocument().outerXml;

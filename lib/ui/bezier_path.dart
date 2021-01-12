@@ -5,7 +5,7 @@ class BezierPath {
   BezierPath._();
 
   static void paintBezierPath(Canvas canvas, Stroke stroke) {
-    if (stroke.isDeleted) {
+    if (stroke.isDeleted || stroke.points.length < 2) {
       return;
     }
     try {
