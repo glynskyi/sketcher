@@ -38,12 +38,14 @@ class EraserController implements ToolController {
   }
 
   void _searchDeleteStroke(Offset offset) {
-    final layers = List<SketchLayer>.from(_sketchController.layers, growable: false);
+    final layers =
+        List<SketchLayer>.from(_sketchController.layers, growable: false);
     for (var layer in layers) {
       final aliveStrokes = <Stroke>[];
       final deletedStrokes = <Stroke>[];
       for (var stroke in layer.painter.strokes) {
-        final isAffected = stroke.points.any((point) => (offset - point).distance < _tolerance);
+        final isAffected = stroke.points
+            .any((point) => (offset - point).distance < _tolerance);
         if (isAffected) {
           deletedStrokes.add(stroke);
         } else {
@@ -52,7 +54,8 @@ class EraserController implements ToolController {
       }
       if (deletedStrokes.isNotEmpty) {
         // final layer = Layer(_sketchController.)
-        final operation = EraserOperation(layer, aliveStrokes, _sketchController.nextLayerId);
+        final operation =
+            EraserOperation(layer, aliveStrokes, _sketchController.nextLayerId);
         _sketchController.commitOperation(operation);
       }
       // final deletingStokes = layer.painter.strokes

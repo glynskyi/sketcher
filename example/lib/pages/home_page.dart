@@ -33,11 +33,15 @@ class _HomePageState extends State<HomePage> {
         actions: [
           IconButton(
             icon: const Icon(Icons.undo),
-            onPressed: _sketchController.isUndoAvailable ? () => _sketchController.undo() : null,
+            onPressed: _sketchController.isUndoAvailable
+                ? () => _sketchController.undo()
+                : null,
           ),
           IconButton(
             icon: const Icon(Icons.redo),
-            onPressed: _sketchController.isRedoAvailable ? () => _sketchController.redo() : null,
+            onPressed: _sketchController.isRedoAvailable
+                ? () => _sketchController.redo()
+                : null,
           ),
         ],
       ),
@@ -88,7 +92,8 @@ class _HomePageState extends State<HomePage> {
           ),
           IconButton(
             icon: const Icon(Icons.highlight),
-            onPressed: () => _sketchController.setActiveTool(SketchTool.Highlighter),
+            onPressed: () =>
+                _sketchController.setActiveTool(SketchTool.Highlighter),
           ),
           IconButton(
             icon: const Icon(Icons.edit),

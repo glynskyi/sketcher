@@ -12,7 +12,8 @@ class SvgImporter implements Importer {
     for (var pathNode in document.rootElement.children) {
       final d = pathNode.getAttribute("d");
       final stroke = pathNode.getAttribute("stroke");
-      final strokeOpacity = double.parse(pathNode.getAttribute("stroke-opacity"));
+      final strokeOpacity =
+          double.parse(pathNode.getAttribute("stroke-opacity"));
       final strokeWidth = double.parse(pathNode.getAttribute("stroke-width"));
 
       final commands = d.split(" ");
@@ -25,7 +26,8 @@ class SvgImporter implements Importer {
         points.add(Offset(dx.toDouble(), dy.toDouble()));
       }
 
-      final strokeColor = _svgColorToFlutterColor(stroke).withOpacity(strokeOpacity);
+      final strokeColor =
+          _svgColorToFlutterColor(stroke).withOpacity(strokeOpacity);
       strokes.add(Stroke(points, strokeColor, strokeWidth));
     }
     controller.init(strokes);

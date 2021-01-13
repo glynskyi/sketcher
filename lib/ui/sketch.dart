@@ -30,12 +30,15 @@ class _SketchState extends State<Sketch> {
 
   void panStart(PointerDownEvent details) {
     initialPointer = details.pointer;
-    if (_activeTool == SketchTool.Pencil || _activeTool == SketchTool.Highlighter) {
-      _toolController = PencilController(widget.controller, () => widget.controller.notify());
+    if (_activeTool == SketchTool.Pencil ||
+        _activeTool == SketchTool.Highlighter) {
+      _toolController =
+          PencilController(widget.controller, () => widget.controller.notify());
       _toolController.panStart(details);
     }
     if (_activeTool == SketchTool.Eraser) {
-      _toolController = EraserController(widget.controller, () => widget.controller.notify());
+      _toolController =
+          EraserController(widget.controller, () => widget.controller.notify());
       _toolController?.panStart(details);
     }
   }
@@ -103,7 +106,8 @@ class _SketchState extends State<Sketch> {
       child: Stack(
         children: [
           ...RepaintBoundary.wrapAll(widget.controller.layers
-              .map((layer) => CustomPaint(key: ValueKey(layer.id), painter: layer.painter))
+              .map((layer) =>
+                  CustomPaint(key: ValueKey(layer.id), painter: layer.painter))
               .toList(growable: false)),
           CustomPaint(
             painter: _toolController?.toolPainter,

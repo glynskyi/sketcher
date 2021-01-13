@@ -21,7 +21,8 @@ class SvgExporter implements Exporter {
   }
 
   void _toPath(XmlBuilder builder, Stroke stroke) {
-    var d = "M${stroke.points.first.dx.toInt()} ${stroke.points.first.dy.toInt()}";
+    var d =
+        "M${stroke.points.first.dx.toInt()} ${stroke.points.first.dy.toInt()}";
     for (var point in stroke.points.skip(1)) {
       d += " L${point.dx.toInt()} ${point.dy.toInt()}";
     }

@@ -8,6 +8,7 @@ class StrokeStyle {
   StrokeStyle(this.opacity, this.color, this.weight);
 
   StrokeStyle copy({double opacity, Color color, double weight}) {
-    return StrokeStyle(opacity ?? this.opacity, color ?? this.color, weight ?? this.weight);
+    return StrokeStyle(
+        opacity ?? this.opacity, color ?? this.color, weight ?? this.weight);
   }
 }

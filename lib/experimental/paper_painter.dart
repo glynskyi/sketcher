@@ -17,7 +17,8 @@ class _PaperPainter extends CustomPainter {
     final offset = scrollNotifier.value % gap;
     for (var i = 0; i < size.width; i += gap) {
       for (var e = 0; e < size.height; e += gap) {
-        canvas.drawCircle(Offset(i.toDouble(), e.toDouble() + gap - offset), 1.2, _paint);
+        canvas.drawCircle(
+            Offset(i.toDouble(), e.toDouble() + gap - offset), 1.2, _paint);
       }
     }
   }

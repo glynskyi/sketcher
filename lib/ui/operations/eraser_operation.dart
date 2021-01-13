@@ -22,7 +22,8 @@ class EraserOperation implements Operation {
 
   @override
   void undo(SketchController controller) {
-    final index = controller.layers.indexWhere((layer) => layer.id == _nextLaterId);
+    final index =
+        controller.layers.indexWhere((layer) => layer.id == _nextLaterId);
     controller.layers[index] = _originLayer;
     controller.notify();
   }

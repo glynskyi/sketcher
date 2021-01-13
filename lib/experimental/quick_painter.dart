@@ -39,7 +39,9 @@ class _QuickPainter extends ChangeNotifier implements CustomPainter {
 //    canvas.drawLine(prev.offset, next.offset, _paint);
 
     try {
-      final knots = _allPoints.map((point) => EPointF(point.offset.dx, point.offset.dy)).toList();
+      final knots = _allPoints
+          .map((point) => EPointF(point.offset.dx, point.offset.dy))
+          .toList();
       if (knots.isEmpty) return;
 
       final polyBezierPath = Path();
@@ -60,7 +62,8 @@ class _QuickPainter extends ChangeNotifier implements CustomPainter {
 
         for (var i = 0; i < n; i++) {
           final targetKnot = knots[i + 1];
-          appendCurveToPath(polyBezierPath, controlPoints[i], controlPoints[n + i], targetKnot);
+          appendCurveToPath(polyBezierPath, controlPoints[i],
+              controlPoints[n + i], targetKnot);
         }
       }
 
@@ -90,13 +93,17 @@ class _QuickPainter extends ChangeNotifier implements CustomPainter {
     newTarget[0] = target[0].scaleBy(1 / mainDiag[0]);
 
     for (var i = 1; i < n - 1; i++) {
-      newUpperDiag[i] = upperDiag[i] / (mainDiag[i] - lowerDiag[i - 1] * newUpperDiag[i - 1]);
+      newUpperDiag[i] =
+          upperDiag[i] / (mainDiag[i] - lowerDiag[i - 1] * newUpperDiag[i - 1]);
     }
 
     for (var i = 1; i < n; i++) {
-      final targetScale = 1 / (mainDiag[i] - lowerDiag[i - 1] * newUpperDiag[i - 1]);
+      final targetScale =
+          1 / (mainDiag[i] - lowerDiag[i - 1] * newUpperDiag[i - 1]);
 
-      newTarget[i] = (target[i].minus(newTarget[i - 1].scaleBy(lowerDiag[i - 1]))).scaleBy(targetScale);
+      newTarget[i] =
+          (target[i].minus(newTarget[i - 1].scaleBy(lowerDiag[i - 1])))
+              .scaleBy(targetScale);
     }
 
     // backward sweep for control points c_i,0:
@@ -166,9 +173,10 @@ class _QuickPainter extends ChangeNotifier implements CustomPainter {
     return result;
   }
 
-  void appendCurveToPath(Path path, EPointF control1, EPointF control2, EPointF targetKnot) {
-    path.cubicTo(
-        control1.getX(), control1.getY(), control2.getX(), control2.getY(), targetKnot.getX(), targetKnot.getY());
+  void appendCurveToPath(
+      Path path, EPointF control1, EPointF control2, EPointF targetKnot) {
+    path.cubicTo(control1.getX(), control1.getY(), control2.getX(),
+        control2.getY(), targetKnot.getX(), targetKnot.getY());
   }
 
 //    for (var point in _allPoints) {
