@@ -1,3 +1,7 @@
+## 1.0.2
+
+* added the background color for a sketch
+
 ## 1.0.1
 
 * added the undo/redo actions for eraser
