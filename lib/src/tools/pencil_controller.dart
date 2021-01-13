@@ -1,8 +1,8 @@
 import 'package:flutter/widgets.dart';
-import 'package:sketcher/tools/tool_controller.dart';
-import 'package:sketcher/ui/operations/stroke_operation.dart';
-import 'package:sketcher/ui/reactive_painter.dart';
-import 'package:sketcher/ui/sketch_controller.dart';
+import 'package:sketcher/src/tools/tool_controller.dart';
+import 'package:sketcher/src/ui/operations/stroke_operation.dart';
+import 'package:sketcher/src/ui/reactive_painter.dart';
+import 'package:sketcher/src/ui/sketch_controller.dart';
 
 class PencilController implements ToolController {
   final SketchController _sketchController;

@@ -1,4 +1,4 @@
-import 'package:sketcher/ui/static_painter.dart';
+import 'package:sketcher/src/ui/static_painter.dart';
 
 class SketchLayer {
   final int id;

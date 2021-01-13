@@ -1,4 +1,4 @@
-import 'package:sketcher/sketcher.dart';
+import 'package:sketcher/src/ui/sketch_controller.dart';
 
 abstract class Operation {
   void redo(SketchController controller);

@@ -1,11 +1,11 @@
 import 'package:flutter/painting.dart';
-import 'package:sketcher/models/stroke.dart';
+import 'package:sketcher/src/models/stroke.dart';
 
 class BezierPath {
   BezierPath._();
 
   static void paintBezierPath(Canvas canvas, Stroke stroke) {
-    if (stroke.isDeleted || stroke.points.length < 2) {
+    if (stroke.points.length < 2) {
       return;
     }
     try {

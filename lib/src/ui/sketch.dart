@@ -1,11 +1,12 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:sketcher/models/sketch_tool.dart';
-import 'package:sketcher/tools/eraser_controller.dart';
-import 'package:sketcher/tools/pencil_controller.dart';
-import 'package:sketcher/tools/tool_controller.dart';
-import 'package:sketcher/ui/sketch_controller.dart';
+import 'package:sketcher/src/models/sketch_tool.dart';
+import 'package:sketcher/src/tools/eraser_controller.dart';
+import 'package:sketcher/src/tools/pencil_controller.dart';
+import 'package:sketcher/src/tools/tool_controller.dart';
+import 'package:sketcher/src/ui/sketch_controller.dart';
 
+/// A widget that provides a canvas on which a user makes handwriting.
 class Sketch extends StatefulWidget {
   final SketchController controller;
   final ScrollController scrollController;
@@ -101,19 +102,22 @@ class _SketchState extends State<Sketch> {
 
   @override
   Widget build(BuildContext context) {
-    return Transform.translate(
-      offset: Offset(0, -_offset),
-      child: Stack(
-        children: [
-          ...RepaintBoundary.wrapAll(widget.controller.layers
-              .map((layer) =>
-                  CustomPaint(key: ValueKey(layer.id), painter: layer.painter))
-              .toList(growable: false)),
-          CustomPaint(
-            painter: _toolController?.toolPainter,
-            child: _activeTool == SketchTool.None ? null : touch,
-          ),
-        ],
+    return Container(
+      color: widget.controller.backgroundColor,
+      child: Transform.translate(
+        offset: Offset(0, -_offset),
+        child: Stack(
+          children: [
+            ...RepaintBoundary.wrapAll(widget.controller.layers
+                .map((layer) => CustomPaint(
+                    key: ValueKey(layer.id), painter: layer.painter))
+                .toList(growable: false)),
+            CustomPaint(
+              painter: _toolController?.toolPainter,
+              child: _activeTool == SketchTool.None ? null : touch,
+            ),
+          ],
+        ),
       ),
     );
   }

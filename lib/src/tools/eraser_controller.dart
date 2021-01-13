@@ -1,11 +1,11 @@
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
-import 'package:sketcher/models/stroke.dart';
-import 'package:sketcher/tools/tool_controller.dart';
-import 'package:sketcher/ui/operations/eraser_operation.dart';
-import 'package:sketcher/ui/reactive_painter.dart';
-import 'package:sketcher/ui/sketch_controller.dart';
-import 'package:sketcher/ui/sketch_layer.dart';
+import 'package:sketcher/src/models/stroke.dart';
+import 'package:sketcher/src/tools/tool_controller.dart';
+import 'package:sketcher/src/ui/operations/eraser_operation.dart';
+import 'package:sketcher/src/ui/reactive_painter.dart';
+import 'package:sketcher/src/ui/sketch_controller.dart';
+import 'package:sketcher/src/ui/sketch_layer.dart';
 
 class EraserController implements ToolController {
   final SketchController _sketchController;
@@ -19,7 +19,7 @@ class EraserController implements ToolController {
 
   @override
   void panStart(PointerDownEvent details) {
-    toolPainter = ReactivePainter(_sketchController.activeToolStyle);
+    // toolPainter = ReactivePainter(_sketchController.activeToolStyle);
     // if (_sketchController.commitStrokes()) {
     //   _onStateUpdated();
     // }

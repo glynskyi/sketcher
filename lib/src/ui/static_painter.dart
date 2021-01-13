@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sketcher/models/stroke.dart';
-import 'package:sketcher/ui/bezier_path.dart';
+import 'package:sketcher/src/models/stroke.dart';
+import 'package:sketcher/src/ui/bezier_path.dart';
 
 class StaticPainter extends CustomPainter {
   final List<Stroke> strokes;

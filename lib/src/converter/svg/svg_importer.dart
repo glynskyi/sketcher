@@ -1,9 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
-import 'package:sketcher/converter/importer.dart';
-import 'package:sketcher/models/stroke.dart';
-import 'package:sketcher/sketcher.dart';
+import 'package:sketcher/src/converter/importer.dart';
+import 'package:sketcher/src/models/stroke.dart';
+import 'package:sketcher/src/ui/sketch_controller.dart';
 import 'package:xml/xml.dart';
 
+/// A utility class for decoding SVG data to a [SketchController]
 class SvgImporter implements Importer {
   @override
   void import(SketchController controller, String svg) {
@@ -30,7 +32,11 @@ class SvgImporter implements Importer {
           _svgColorToFlutterColor(stroke).withOpacity(strokeOpacity);
       strokes.add(Stroke(points, strokeColor, strokeWidth));
     }
-    controller.init(strokes);
+    final viewportFill = document.rootElement.getAttribute("viewport-fill");
+    final backgroundColor = viewportFill != null
+        ? _svgColorToFlutterColor(viewportFill)
+        : Colors.lightGreenAccent;
+    controller.init(strokes, backgroundColor);
   }
 
   Color _svgColorToFlutterColor(String code) {
