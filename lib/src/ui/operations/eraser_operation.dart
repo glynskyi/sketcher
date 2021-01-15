@@ -7,14 +7,15 @@ import 'package:sketcher/src/ui/static_painter.dart';
 class EraserOperation implements Operation {
   final SketchLayer _originLayer;
   final List<Stroke> _aliveStrokes;
-  final int _nextLaterId;
+  final int _nextLayerId;
 
-  EraserOperation(this._originLayer, this._aliveStrokes, this._nextLaterId);
+  EraserOperation(this._originLayer, this._aliveStrokes, this._nextLayerId);
 
   @override
   void redo(SketchController controller) {
+    print("redo: _originLayer $_originLayer");
     final painter = StaticPainter(_aliveStrokes);
-    final layer = SketchLayer(_nextLaterId, painter);
+    final layer = SketchLayer(_nextLayerId, painter);
     final index = controller.layers.indexOf(_originLayer);
     controller.layers[index] = layer;
     controller.notify();
@@ -22,7 +23,9 @@ class EraserOperation implements Operation {
 
   @override
   void undo(SketchController controller) {
-    final index = controller.layers.indexWhere((layer) => layer.id == _nextLaterId);
+    print("undo: _originLayer $_originLayer");
+    final index =
+        controller.layers.indexWhere((layer) => layer.id == _nextLayerId);
     controller.layers[index] = _originLayer;
     controller.notify();
   }

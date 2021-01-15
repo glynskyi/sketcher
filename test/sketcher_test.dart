@@ -55,7 +55,8 @@ void main() {
     test('should remove a stroke', () {
       final sketchController = SketchController();
       const stroke = Stroke([Offset(0, 0), Offset(10, 10)], Colors.red, 1);
-      sketchController.commitOperation(const StrokeOperation(stroke));
+      sketchController.commitOperation(
+          StrokeOperation(stroke, sketchController.nextLayerId));
       sketchController.setActiveTool(SketchTool.Eraser);
       final eraser = EraserController(sketchController, () {});
       eraser.panStart(const PointerDownEvent(position: Offset(0, 0)));
@@ -68,18 +69,18 @@ void main() {
 
   group('StrokeOperation', () {
     test('should add a stroke', () {
-      const stroke = Stroke([Offset(0, 0), Offset(10, 0)], Colors.red, 1.0);
-      const operation = StrokeOperation(stroke);
       final sketchController = SketchController();
+      const stroke = Stroke([Offset(0, 0), Offset(10, 0)], Colors.red, 1.0);
+      final operation = StrokeOperation(stroke, sketchController.nextLayerId);
       sketchController.commitOperation(operation);
       expect(sketchController.layers, hasLength(1));
       expect(sketchController.layers.first.painter.strokes, hasLength(1));
     });
 
     test('should undo the add operation', () {
-      const stroke = Stroke([Offset(0, 0), Offset(10, 0)], Colors.red, 1.0);
-      const operation = StrokeOperation(stroke);
       final sketchController = SketchController();
+      const stroke = Stroke([Offset(0, 0), Offset(10, 0)], Colors.red, 1.0);
+      final operation = StrokeOperation(stroke, sketchController.nextLayerId);
       sketchController.commitOperation(operation);
       sketchController.undo();
       expect(sketchController.layers, isEmpty);

@@ -112,7 +112,7 @@ class SketchController extends ChangeNotifier {
   }
 
   void notify() {
-    print("notify()");
+    print("notify(): layers = $layers");
     notifyListeners();
   }
 

@@ -1,3 +1,7 @@
+## 1.0.3
+
+* fixed undo/redo actions for identical layers
+
 ## 1.0.2
 
 * added the background color for a sketch

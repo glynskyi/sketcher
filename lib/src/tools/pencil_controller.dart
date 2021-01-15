@@ -29,7 +29,7 @@ class PencilController implements ToolController {
   void panEnd(PointerUpEvent details) {
     final stroke = toolPainter.endStroke();
     toolPainter = null;
-    final operation = StrokeOperation(stroke);
+    final operation = StrokeOperation(stroke, _sketchController.nextLayerId);
     _sketchController.commitOperation(operation);
     // _sketchController.reactivePainter.endStroke();
     // if (_sketchController.reactivePainter.strokes.length > 10) {
