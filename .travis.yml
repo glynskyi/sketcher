@@ -1,0 +1,15 @@
+language: dart
+dart: dev
+jobs:
+  include:
+    - stage: analyze
+      script: dartanalyzer --fatal-warnings .
+    - stage: unit_test
+      script: pub run test test/test_all.dart --platform vm
+stages:
+  - analyze
+  - unit_test
+cache:
+  directories:
+    - "$HOME/.pub-cache"
+    - ".dart_tool/build"
