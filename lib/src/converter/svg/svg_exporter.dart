@@ -37,7 +37,7 @@ class SvgExporter implements Exporter {
   }
 
   static String _flutterColorToSvgColor(int color) {
-    final fullColor = color.toRadixString(16);
+    final fullColor = color.toRadixString(16).toUpperCase().padLeft(8, "0");
     final onlyColor = fullColor.substring(fullColor.length - 6);
     return "#$onlyColor";
   }

@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sketcher/sketcher.dart';
+import 'package:sketcher/src/converter/svg/svg_exporter.dart';
+import 'package:sketcher/src/converter/svg/svg_importer.dart';
 import 'package:sketcher/src/models/stroke.dart';
 import 'package:sketcher/src/tools/eraser_controller.dart';
 import 'package:sketcher/src/tools/pencil_controller.dart';
@@ -84,6 +86,54 @@ void main() {
       sketchController.commitOperation(operation);
       sketchController.undo();
       expect(sketchController.layers, isEmpty);
+    });
+  });
+
+  group('SvgExporter', () {
+    test('should export strokes', () {
+      final sketchController = SketchController();
+      const stroke =
+          Stroke([Offset(0, 0), Offset(10, 0)], Color(0xFFFF0000), 1.0);
+      final operation = StrokeOperation(stroke, sketchController.nextLayerId);
+      sketchController.commitOperation(operation);
+      final exporter = SvgExporter();
+      final svg = exporter.export(sketchController);
+      expect(svg, contains("M0 0 L10 0"));
+      expect(svg, contains("#FF0000"));
+    });
+
+    test('should export background color', () {
+      final sketchController = SketchController();
+      sketchController.init([], const Color(0xFF00FF00));
+      const stroke =
+          Stroke([Offset(0, 0), Offset(10, 0)], Color(0xFFFF0000), 1.0);
+      final operation = StrokeOperation(stroke, sketchController.nextLayerId);
+      sketchController.commitOperation(operation);
+      final exporter = SvgExporter();
+      final svg = exporter.export(sketchController);
+      expect(svg, contains("viewport-fill=\"#00FF00\""));
+    });
+  });
+
+  group('SvgImporter', () {
+    test('should import strokes', () {
+      final sketchController = SketchController();
+      final importer = SvgImporter();
+      importer.import(sketchController,
+          '<?xml version="1.0"?><svg viewport-fill="#00FF00"><path d="M0 0 L10 0" stroke="#FF0000" stroke-opacity="1.0" stroke-width="1" fill="none"/></svg>');
+      expect(sketchController.layers, hasLength(1));
+      expect(sketchController.layers.first.painter.strokes, hasLength(1));
+      final stroke = sketchController.layers.first.painter.strokes.first;
+      expect(stroke.color, const Color(0xFFFF0000));
+      expect(stroke.points, const [Offset(0, 0), Offset(10, 0)]);
+      expect(stroke.weight, 1.0);
+    });
+    test('should import background color', () {
+      final sketchController = SketchController();
+      final importer = SvgImporter();
+      importer.import(sketchController,
+          '<?xml version="1.0"?><svg viewport-fill="#00FF00"><path d="M0 0 L10 0" stroke="#FF0000" stroke-opacity="1.0" stroke-width="1" fill="none"/></svg>');
+      expect(sketchController.backgroundColor, const Color(0xFF00FF00));
     });
   });
 }
