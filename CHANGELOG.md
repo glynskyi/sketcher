@@ -1,3 +1,7 @@
+## 1.0.4
+
+* covered the code with the tests
+
 ## 1.0.3
 
 * fixed undo/redo actions for identical layers
