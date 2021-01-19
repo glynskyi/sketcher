@@ -1,11 +1,16 @@
 language: dart
-dart: dev
 jobs:
   include:
+    - stage: Formatting
+      script: $DARTFMT -n $PACKAGES --set-exit-if-changed
     - stage: analyze
       script: dartanalyzer --fatal-warnings .
     - stage: unit_test
       script: pub run test test/test_all.dart --platform vm
+install:
+  - git clone $FLUTTER_GITHUB -b stable --depth 1
+  - $FLUTTER doctor
+  - $FLUTTER pub get
 stages:
   - analyze
   - unit_test
@@ -13,3 +18,9 @@ cache:
   directories:
     - "$HOME/.pub-cache"
     - ".dart_tool/build"
+env:
+  global:
+    - DARTSDK=./flutter/bin/cache/dart-sdk/bin
+    - DARTFMT=$DARTSDK/dartfmt
+    - FLUTTER=./flutter/bin/flutter
+    - FLUTTER_GITHUB=https://github.com/flutter/flutter.git
