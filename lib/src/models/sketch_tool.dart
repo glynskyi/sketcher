@@ -1,5 +1,3 @@
-import 'package:flutter/foundation.dart';
-
 enum SketchTool {
   None,
   Pencil,
@@ -9,10 +7,10 @@ enum SketchTool {
 
 extension SketchToolExtension on SketchTool {
   T map<T>({
-    @required T Function(SketchTool) none,
-    @required T Function(SketchTool) pencil,
-    @required T Function(SketchTool) highlighter,
-    @required T Function(SketchTool) eraser,
+    required T Function(SketchTool) none,
+    required T Function(SketchTool) pencil,
+    required T Function(SketchTool) highlighter,
+    required T Function(SketchTool) eraser,
   }) {
     switch (this) {
       case SketchTool.None:

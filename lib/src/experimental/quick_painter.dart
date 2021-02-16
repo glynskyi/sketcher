@@ -78,15 +78,15 @@ class _QuickPainter extends ChangeNotifier implements CustomPainter {
   }
 
   List<EPointF> computeControlPoints(int n, List<EPointF> knots) {
-    final result = List<EPointF>.filled(2 * n, null);
+    final result = List<EPointF?>.filled(2 * n, null);
 
     final target = constructTargetVector(n, knots);
     final lowerDiag = constructLowerDiagonalVector(n - 1);
     final mainDiag = constructMainDiagonalVector(n);
     final upperDiag = constructUpperDiagonalVector(n - 1);
 
-    final newTarget = List<EPointF>.filled(n, null);
-    final newUpperDiag = List<double>.filled(n - 1, null);
+    final newTarget = List<EPointF?>.filled(n, null);
+    final newUpperDiag = List<double?>.filled(n - 1, null);
 
     // forward sweep for control points c_i,0:
     newUpperDiag[0] = upperDiag[0] / mainDiag[0];
@@ -94,15 +94,15 @@ class _QuickPainter extends ChangeNotifier implements CustomPainter {
 
     for (var i = 1; i < n - 1; i++) {
       newUpperDiag[i] =
-          upperDiag[i] / (mainDiag[i] - lowerDiag[i - 1] * newUpperDiag[i - 1]);
+          upperDiag[i] / (mainDiag[i] - lowerDiag[i - 1] * newUpperDiag[i - 1]!);
     }
 
     for (var i = 1; i < n; i++) {
       final targetScale =
-          1 / (mainDiag[i] - lowerDiag[i - 1] * newUpperDiag[i - 1]);
+          1 / (mainDiag[i] - lowerDiag[i - 1] * newUpperDiag[i - 1]!);
 
       newTarget[i] =
-          (target[i].minus(newTarget[i - 1].scaleBy(lowerDiag[i - 1])))
+          (target[i].minus(newTarget[i - 1]!.scaleBy(lowerDiag[i - 1])))
               .scaleBy(targetScale);
     }
 
@@ -110,21 +110,21 @@ class _QuickPainter extends ChangeNotifier implements CustomPainter {
     result[n - 1] = newTarget[n - 1];
 
     for (var i = n - 2; i >= 0; i--) {
-      result[i] = newTarget[i].minus(result[i + 1], newUpperDiag[i]);
+      result[i] = newTarget[i]!.minus(result[i + 1]!, newUpperDiag[i]!);
     }
 
     // calculate remaining control points c_i,1 directly:
     for (var i = 0; i < n - 1; i++) {
-      result[n + i] = knots[i + 1].scaleBy(2).minus(result[i + 1]);
+      result[n + i] = knots[i + 1].scaleBy(2).minus(result[i + 1]!);
     }
 
-    result[2 * n - 1] = knots[n].plus(result[n - 1]).scaleBy(0.5);
+    result[2 * n - 1] = knots[n].plus(result[n - 1]!).scaleBy(0.5);
 
-    return result;
+    return result as List<EPointF>;
   }
 
   List<EPointF> constructTargetVector(int n, List<EPointF> knots) {
-    final result = List<EPointF>.filled(n, null);
+    final result = List<EPointF?>.filled(n, null);
 
     result[0] = knots[0].plus(knots[1], 2);
 
@@ -134,11 +134,11 @@ class _QuickPainter extends ChangeNotifier implements CustomPainter {
 
     result[result.length - 1] = knots[n - 1].scaleBy(8).plus(knots[n]);
 
-    return result;
+    return result as List<EPointF>;
   }
 
   List<double> constructLowerDiagonalVector(int length) {
-    final result = List<double>.filled(length, null);
+    final result = List<double?>.filled(length, null);
 
     for (var i = 0; i < result.length - 1; i++) {
       result[i] = 1.0;
@@ -146,11 +146,11 @@ class _QuickPainter extends ChangeNotifier implements CustomPainter {
 
     result[result.length - 1] = 2.0;
 
-    return result;
+    return result as List<double>;
   }
 
   List<double> constructMainDiagonalVector(int n) {
-    final result = List<double>.filled(n, null);
+    final result = List<double?>.filled(n, null);
 
     result[0] = 2.0;
 
@@ -160,17 +160,17 @@ class _QuickPainter extends ChangeNotifier implements CustomPainter {
 
     result[result.length - 1] = 7.0;
 
-    return result;
+    return result as List<double>;
   }
 
   List<double> constructUpperDiagonalVector(int length) {
-    final result = List<double>.filled(length, null);
+    final result = List<double?>.filled(length, null);
 
     for (var i = 0; i < result.length; i++) {
       result[i] = 1.0;
     }
 
-    return result;
+    return result as List<double>;
   }
 
   void appendCurveToPath(
@@ -193,10 +193,10 @@ class _QuickPainter extends ChangeNotifier implements CustomPainter {
   }
 
   @override
-  bool hitTest(Offset position) => null;
+  bool? hitTest(Offset position) => null;
 
   @override
-  SemanticsBuilderCallback get semanticsBuilder => null;
+  SemanticsBuilderCallback? get semanticsBuilder => null;
 
   @override
   bool shouldRebuildSemantics(CustomPainter oldDelegate) => false;

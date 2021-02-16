@@ -1,3 +1,7 @@
+## 1.1.0
+
+* opted into the null safety
+
 ## 1.0.4
 
 * covered the code with the tests

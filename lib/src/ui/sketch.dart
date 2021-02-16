@@ -12,9 +12,9 @@ class Sketch extends StatefulWidget {
   final ScrollController scrollController;
 
   const Sketch({
-    Key key,
-    @required this.controller,
-    @required this.scrollController,
+    Key? key,
+    required this.controller,
+    required this.scrollController,
   }) : super(key: key);
 
   @override
@@ -22,12 +22,12 @@ class Sketch extends StatefulWidget {
 }
 
 class _SketchState extends State<Sketch> {
-  Widget touch;
+  Widget? touch;
   SketchTool _activeTool = SketchTool.None;
-  ToolController _toolController;
+  ToolController? _toolController;
 
   double _offset = 0;
-  int initialPointer;
+  int? initialPointer;
 
   void panStart(PointerDownEvent details) {
     initialPointer = details.pointer;
@@ -35,7 +35,7 @@ class _SketchState extends State<Sketch> {
         _activeTool == SketchTool.Highlighter) {
       _toolController =
           PencilController(widget.controller, () => widget.controller.notify());
-      _toolController.panStart(details);
+      _toolController!.panStart(details);
     }
     if (_activeTool == SketchTool.Eraser) {
       _toolController =

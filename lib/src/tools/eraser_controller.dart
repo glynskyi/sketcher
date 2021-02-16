@@ -13,7 +13,7 @@ class EraserController implements ToolController {
   final int _tolerance = 10;
 
   @override
-  ReactivePainter toolPainter;
+  ReactivePainter? toolPainter;
 
   EraserController(this._sketchController, this._onStateUpdated);
 

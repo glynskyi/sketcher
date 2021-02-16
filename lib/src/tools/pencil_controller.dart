@@ -11,23 +11,23 @@ class PencilController implements ToolController {
   PencilController(this._sketchController, this._onStateUpdated);
 
   @override
-  ReactivePainter toolPainter;
+  ReactivePainter? toolPainter;
 
   @override
   void panStart(PointerDownEvent details) {
     toolPainter = ReactivePainter(_sketchController.activeToolStyle);
-    toolPainter.startStroke(details.localPosition);
+    toolPainter!.startStroke(details.localPosition);
     _onStateUpdated();
   }
 
   @override
   void panUpdate(PointerMoveEvent details) {
-    toolPainter.appendStroke(details.localPosition);
+    toolPainter!.appendStroke(details.localPosition);
   }
 
   @override
   void panEnd(PointerUpEvent details) {
-    final stroke = toolPainter.endStroke();
+    final stroke = toolPainter!.endStroke();
     toolPainter = null;
     final operation = StrokeOperation(stroke, _sketchController.nextLayerId);
     _sketchController.commitOperation(operation);

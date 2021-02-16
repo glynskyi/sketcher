@@ -14,7 +14,7 @@ class SketchController extends ChangeNotifier {
   final _layers = <SketchLayer>[];
   final _undoStack = <Operation>[];
   final _redoStack = <Operation>[];
-  SketchTool _activeTool;
+  SketchTool _activeTool = SketchTool.None;
   StrokeStyle _pencilStyle;
   StrokeStyle _highlighterStyle;
   int _lastLayerId = 0;
@@ -23,13 +23,10 @@ class SketchController extends ChangeNotifier {
   List<SketchLayer> get layers => _layers;
 
   SketchController({
-    StrokeStyle pencilStyle,
-    StrokeStyle highlighterStyle,
-  }) {
-    _pencilStyle = pencilStyle ?? const StrokeStyle(1, Colors.black, 2);
-    _highlighterStyle =
-        highlighterStyle ?? const StrokeStyle(0.3, Colors.black, 18);
-  }
+    StrokeStyle? pencilStyle,
+    StrokeStyle? highlighterStyle,
+  })  : _pencilStyle = pencilStyle ?? const StrokeStyle(1, Colors.black, 2),
+        _highlighterStyle = highlighterStyle ?? const StrokeStyle(0.3, Colors.black, 18);
 
   int get nextLayerId => ++_lastLayerId;
 
@@ -84,7 +81,7 @@ class SketchController extends ChangeNotifier {
   }
 
   // ignore: missing_return
-  StrokeStyle get activeToolStyle {
+  StrokeStyle? get activeToolStyle {
     switch (_activeTool) {
       case SketchTool.None:
       case SketchTool.Eraser:
@@ -96,16 +93,16 @@ class SketchController extends ChangeNotifier {
     }
   }
 
-  set activeToolStyle(StrokeStyle config) {
+  set activeToolStyle(StrokeStyle? config) {
     switch (_activeTool) {
       case SketchTool.None:
       case SketchTool.Eraser:
         break;
       case SketchTool.Pencil:
-        _pencilStyle = config;
+        _pencilStyle = config!;
         break;
       case SketchTool.Highlighter:
-        _highlighterStyle = config;
+        _highlighterStyle = config!;
         break;
     }
     notifyListeners();

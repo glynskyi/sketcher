@@ -4,7 +4,7 @@ import 'package:flutter/gestures.dart';
 typedef OnStateUpdated = void Function();
 
 abstract class ToolController {
-  CustomPainter get toolPainter;
+  CustomPainter? get toolPainter;
 
   void panStart(PointerDownEvent details);
 

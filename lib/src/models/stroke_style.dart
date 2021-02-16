@@ -13,9 +13,9 @@ class StrokeStyle extends Equatable {
   List<Object> get props => [opacity, color, weight];
 
   StrokeStyle copy({
-    double opacity,
-    Color color,
-    double weight,
+    double? opacity,
+    Color? color,
+    double? weight,
   }) {
     return StrokeStyle(
       opacity ?? this.opacity,

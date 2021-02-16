@@ -9,7 +9,7 @@ class _QuickPainter2 extends ChangeNotifier implements CustomPainter {
     ..strokeWidth = 0.5;
 
 //  final Offset _position;
-  _Touch _last;
+  late _Touch _last;
 
   _QuickPainter2() : super();
 
@@ -39,10 +39,10 @@ class _QuickPainter2 extends ChangeNotifier implements CustomPainter {
   }
 
   @override
-  bool hitTest(Offset position) => null;
+  bool? hitTest(Offset position) => null;
 
   @override
-  SemanticsBuilderCallback get semanticsBuilder => null;
+  SemanticsBuilderCallback? get semanticsBuilder => null;
 
   @override
   bool shouldRebuildSemantics(CustomPainter oldDelegate) => false;

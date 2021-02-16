@@ -54,10 +54,10 @@ class PredictionPainter extends ChangeNotifier implements CustomPainter {
   }
 
   @override
-  bool hitTest(Offset position) => null;
+  bool? hitTest(Offset position) => null;
 
   @override
-  SemanticsBuilderCallback get semanticsBuilder => null;
+  SemanticsBuilderCallback? get semanticsBuilder => null;
 
   @override
   bool shouldRebuildSemantics(CustomPainter oldDelegate) => false;

@@ -8,17 +8,17 @@ class ReactivePainter extends ChangeNotifier implements CustomPainter {
   final _strokes = <Stroke>[];
   // double activeWeight = 1.5;
   // Color activeColor = Colors.green;
-  final StrokeStyle _strokeStyle;
+  final StrokeStyle? _strokeStyle;
 
   ReactivePainter(this._strokeStyle);
 
   List<Stroke> get strokes => _strokes;
 
   @override
-  bool hitTest(Offset position) => null;
+  bool? hitTest(Offset position) => null;
 
   void startStroke(Offset position) {
-    _strokes.add(Stroke([position], _strokeStyle.color.withOpacity(_strokeStyle.opacity), _strokeStyle.weight));
+    _strokes.add(Stroke([position], _strokeStyle!.color.withOpacity(_strokeStyle!.opacity), _strokeStyle!.weight));
     notifyListeners();
   }
 
@@ -51,7 +51,7 @@ class ReactivePainter extends ChangeNotifier implements CustomPainter {
   }
 
   @override
-  SemanticsBuilderCallback get semanticsBuilder => null;
+  SemanticsBuilderCallback? get semanticsBuilder => null;
 
   @override
   bool shouldRebuildSemantics(CustomPainter oldDelegate) {

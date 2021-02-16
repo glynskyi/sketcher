@@ -12,11 +12,11 @@ class SvgImporter implements Importer {
     final document = XmlDocument.parse(svg);
     final strokes = <Stroke>[];
     for (var pathNode in document.rootElement.children) {
-      final d = pathNode.getAttribute("d");
-      final stroke = pathNode.getAttribute("stroke");
+      final d = pathNode.getAttribute("d")!;
+      final stroke = pathNode.getAttribute("stroke")!;
       final strokeOpacity =
-          double.parse(pathNode.getAttribute("stroke-opacity"));
-      final strokeWidth = double.parse(pathNode.getAttribute("stroke-width"));
+          double.parse(pathNode.getAttribute("stroke-opacity")!);
+      final strokeWidth = double.parse(pathNode.getAttribute("stroke-width")!);
 
       final commands = d.split(" ");
       final points = <Offset>[];
