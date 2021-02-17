@@ -57,8 +57,7 @@ void main() {
     test('should remove a stroke', () {
       final sketchController = SketchController();
       const stroke = Stroke([Offset(0, 0), Offset(10, 10)], Colors.red, 1);
-      sketchController.commitOperation(
-          StrokeOperation(stroke, sketchController.nextLayerId));
+      sketchController.commitOperation(StrokeOperation(stroke, sketchController.nextLayerId));
       sketchController.setActiveTool(SketchTool.Eraser);
       final eraser = EraserController(sketchController, () {});
       eraser.panStart(const PointerDownEvent(position: Offset(0, 0)));
@@ -92,8 +91,7 @@ void main() {
   group('SvgExporter', () {
     test('should export strokes', () {
       final sketchController = SketchController();
-      const stroke =
-          Stroke([Offset(0, 0), Offset(10, 0)], Color(0xFFFF0000), 1.0);
+      const stroke = Stroke([Offset(0, 0), Offset(10, 0)], Color(0xFFFF0000), 1.0);
       final operation = StrokeOperation(stroke, sketchController.nextLayerId);
       sketchController.commitOperation(operation);
       final exporter = SvgExporter();
@@ -105,12 +103,11 @@ void main() {
     test('should export background color', () {
       final sketchController = SketchController();
       sketchController.init([], const Color(0xFF00FF00));
-      const stroke =
-          Stroke([Offset(0, 0), Offset(10, 0)], Color(0xFFFF0000), 1.0);
+      const stroke = Stroke([Offset(0, 0), Offset(10, 0)], Color(0xFFFF0000), 1.0);
       final operation = StrokeOperation(stroke, sketchController.nextLayerId);
       sketchController.commitOperation(operation);
       final exporter = SvgExporter();
-      final svg = exporter.export(sketchController);
+      final svg = exporter.export(sketchController, exportBackgroundColor: true);
       expect(svg, contains("viewport-fill=\"#00FF00\""));
     });
   });

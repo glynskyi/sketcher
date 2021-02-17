@@ -80,6 +80,10 @@ class SketchController extends ChangeNotifier {
     activeToolStyle = activeToolStyle?.copy(weight: weight);
   }
 
+  void setActiveOpacity(double opacity) {
+    activeToolStyle = activeToolStyle?.copy(opacity: opacity);
+  }
+
   // ignore: missing_return
   StrokeStyle? get activeToolStyle {
     switch (_activeTool) {
