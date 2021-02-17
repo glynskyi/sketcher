@@ -37,4 +37,10 @@ class PencilController implements ToolController {
     //   _onStateUpdated();
     // }
   }
+
+  @override
+  void panReset() {
+    toolPainter?.strokes.clear();
+    toolPainter = null;
+  }
 }

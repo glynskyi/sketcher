@@ -1,0 +1,4 @@
+enum GestureAction {
+  Drawing,
+  Scrolling,
+}

@@ -33,22 +33,22 @@ class _HomePageState extends State<HomePage> {
         actions: [
           IconButton(
             icon: const Icon(Icons.undo),
-            onPressed: _sketchController.isUndoAvailable
-                ? () => _sketchController.undo()
-                : null,
+            onPressed: _sketchController.isUndoAvailable ? () => _sketchController.undo() : null,
           ),
           IconButton(
             icon: const Icon(Icons.redo),
-            onPressed: _sketchController.isRedoAvailable
-                ? () => _sketchController.redo()
-                : null,
+            onPressed: _sketchController.isRedoAvailable ? () => _sketchController.redo() : null,
           ),
         ],
       ),
       body: Stack(
         fit: StackFit.expand,
         children: [
-          _buildSketch(),
+          SingleChildScrollView(
+            physics: const NeverScrollableScrollPhysics(),
+            controller: _scrollController,
+            child: SizedBox(height: 2000, child: _buildSketch()),
+          ),
           Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -92,8 +92,7 @@ class _HomePageState extends State<HomePage> {
           ),
           IconButton(
             icon: const Icon(Icons.highlight),
-            onPressed: () =>
-                _sketchController.setActiveTool(SketchTool.Highlighter),
+            onPressed: () => _sketchController.setActiveTool(SketchTool.Highlighter),
           ),
           IconButton(
             icon: const Icon(Icons.edit),

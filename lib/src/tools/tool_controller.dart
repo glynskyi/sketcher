@@ -11,4 +11,6 @@ abstract class ToolController {
   void panUpdate(PointerMoveEvent details);
 
   void panEnd(PointerUpEvent details);
+
+  void panReset();
 }

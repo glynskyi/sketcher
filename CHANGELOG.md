@@ -1,3 +1,7 @@
+## 1.1.4
+
+* added the scrolling by two fingers
+
 ## 1.1.3
 
 * added the weight to active tool style
