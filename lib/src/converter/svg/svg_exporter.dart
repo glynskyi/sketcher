@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:sketcher/src/converter/exporter.dart';
 import 'package:sketcher/src/models/curve.dart';
 import 'package:sketcher/src/models/path_curve.dart';
@@ -15,6 +17,7 @@ class SvgExporter implements Exporter {
       if (exportBackgroundColor) {
         builder.attribute("viewport-fill", _flutterColorToSvgColor(controller.backgroundColor.value));
       }
+      _exportViewBox(builder, controller);
       for (var layer in controller.layers) {
         for (var stroke in layer.painter.curves) {
           _toPath(builder, stroke);
@@ -22,6 +25,23 @@ class SvgExporter implements Exporter {
       }
     });
     return builder.buildDocument().outerXml;
+  }
+
+  void _exportViewBox(XmlBuilder builder, SketchController controller) {
+    final overallRect = controller.layers.map((layer) {
+      return layer.painter.curves.map((curve) {
+        return curve.points.map((offset) => Rect.fromPoints(Offset.zero, offset)).reduce(_expandToInclude);
+      }).reduce(_expandToInclude);
+    }).reduce(_expandToInclude);
+    final width = overallRect.width.ceil();
+    final height = overallRect.height.ceil();
+    builder.attribute("width", width);
+    builder.attribute("height", height);
+    builder.attribute("viewBox", "0 0 $width $height");
+  }
+
+  Rect _expandToInclude(Rect rect1, Rect rect2) {
+    return rect1.expandToInclude(rect2);
   }
 
   void _toPath(XmlBuilder builder, Curve curve) {
@@ -42,6 +62,7 @@ class SvgExporter implements Exporter {
         "stroke": _flutterColorToSvgColor(curve.color.value),
         "stroke-opacity": curve.color.opacity.toString(),
         "stroke-width": curve.weight.toStringAsFixed(0),
+        "stroke-linecap": "round",
         "fill": "none"
       });
     } else {

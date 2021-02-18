@@ -1,3 +1,7 @@
+## 1.1.6
+
+* added the view box to exported SVG 
+
 ## 1.1.5
 
 * added the legacy filled paths
