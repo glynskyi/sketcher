@@ -1,4 +1,4 @@
-import 'package:sketcher/src/models/stroke.dart';
+import 'package:sketcher/src/models/curve.dart';
 import 'package:sketcher/src/ui/operations/operation.dart';
 import 'package:sketcher/src/ui/sketch_controller.dart';
 import 'package:sketcher/src/ui/sketch_layer.dart';
@@ -6,7 +6,7 @@ import 'package:sketcher/src/ui/static_painter.dart';
 
 class EraserOperation implements Operation {
   final SketchLayer _originLayer;
-  final List<Stroke> _aliveStrokes;
+  final List<Curve> _aliveStrokes;
   final int _nextLayerId;
 
   EraserOperation(this._originLayer, this._aliveStrokes, this._nextLayerId);
@@ -24,8 +24,7 @@ class EraserOperation implements Operation {
   @override
   void undo(SketchController controller) {
     print("undo: _originLayer $_originLayer");
-    final index =
-        controller.layers.indexWhere((layer) => layer.id == _nextLayerId);
+    final index = controller.layers.indexWhere((layer) => layer.id == _nextLayerId);
     controller.layers[index] = _originLayer;
     controller.notify();
   }

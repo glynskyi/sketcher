@@ -1,3 +1,7 @@
+## 1.1.5
+
+* added the legacy filled paths
+
 ## 1.1.4
 
 * added the scrolling by two fingers

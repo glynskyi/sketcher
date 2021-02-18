@@ -1,8 +1,9 @@
-import 'package:equatable/equatable.dart';
 import 'package:flutter/painting.dart';
+import 'package:sketcher/src/models/curve.dart';
 
 /// A pencil or highlighter stroke. Contains a list of points that belong to it.
-class Stroke extends Equatable {
+class Stroke extends Curve {
+  @override
   final List<Offset> points;
   final Color color;
   final double weight;

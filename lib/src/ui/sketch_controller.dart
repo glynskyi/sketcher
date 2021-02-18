@@ -1,6 +1,8 @@
-import 'package:flutter/material.dart';
+import 'dart:ui';
+
+import 'package:flutter/material.dart' as material;
+import 'package:sketcher/src/models/curve.dart';
 import 'package:sketcher/src/models/sketch_tool.dart';
-import 'package:sketcher/src/models/stroke.dart';
 import 'package:sketcher/src/models/stroke_style.dart';
 import 'package:sketcher/src/ui/operations/operation.dart';
 import 'package:sketcher/src/ui/sketch.dart';
@@ -10,7 +12,7 @@ import 'package:sketcher/src/ui/static_painter.dart';
 /// Controls a [Sketch] widget
 ///
 /// A [SketchController] creates undo and redo operations queue.
-class SketchController extends ChangeNotifier {
+class SketchController extends material.ChangeNotifier {
   final _layers = <SketchLayer>[];
   final _undoStack = <Operation>[];
   final _redoStack = <Operation>[];
@@ -18,15 +20,15 @@ class SketchController extends ChangeNotifier {
   StrokeStyle _pencilStyle;
   StrokeStyle _highlighterStyle;
   int _lastLayerId = 0;
-  Color _backgroundColor = Colors.transparent;
+  Color _backgroundColor = material.Colors.transparent;
 
   List<SketchLayer> get layers => _layers;
 
   SketchController({
     StrokeStyle? pencilStyle,
     StrokeStyle? highlighterStyle,
-  })  : _pencilStyle = pencilStyle ?? const StrokeStyle(1, Colors.black, 2),
-        _highlighterStyle = highlighterStyle ?? const StrokeStyle(0.3, Colors.black, 18);
+  })  : _pencilStyle = pencilStyle ?? const StrokeStyle(1, material.Colors.black, 2),
+        _highlighterStyle = highlighterStyle ?? const StrokeStyle(0.3, material.Colors.black, 18);
 
   int get nextLayerId => ++_lastLayerId;
 
@@ -128,9 +130,9 @@ class SketchController extends ChangeNotifier {
   //   }
   // }
 
-  void init(List<Stroke> strokes, Color backgroundColor) {
+  void init(List<Curve> curves, Color backgroundColor) {
     _backgroundColor = backgroundColor;
-    final layer = SketchLayer(nextLayerId, StaticPainter(strokes));
+    final layer = SketchLayer(nextLayerId, StaticPainter(curves));
     layers.add(layer);
     notifyListeners();
   }

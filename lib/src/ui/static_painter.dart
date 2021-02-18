@@ -1,16 +1,27 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:sketcher/src/models/curve.dart';
+import 'package:sketcher/src/models/path_curve.dart';
 import 'package:sketcher/src/models/stroke.dart';
 import 'package:sketcher/src/ui/bezier_path.dart';
 
 class StaticPainter extends CustomPainter {
-  final List<Stroke> strokes;
+  final List<Curve> curves;
 
-  StaticPainter(this.strokes);
+  StaticPainter(this.curves);
 
   @override
   void paint(Canvas canvas, Size size) {
-    for (var stroke in strokes) {
-      BezierPath.paintBezierPath(canvas, stroke);
+    for (var curve in curves) {
+      if (curve is Stroke) {
+        BezierPath.paintBezierPath(canvas, curve);
+      } else if (curve is PathCurve) {
+        canvas.drawPath(
+          curve.path,
+          Paint()
+            ..color = curve.color
+            ..style = PaintingStyle.fill,
+        );
+      }
     }
   }
 
@@ -21,6 +32,6 @@ class StaticPainter extends CustomPainter {
 
   @override
   String toString() {
-    return "StaticPainter {$strokes}";
+    return "StaticPainter {$curves}";
   }
 }

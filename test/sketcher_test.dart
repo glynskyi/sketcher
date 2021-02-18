@@ -34,7 +34,7 @@ void main() {
       pencil.panUpdate(const PointerMoveEvent(position: Offset(10, 0)));
       pencil.panEnd(const PointerUpEvent());
       expect(sketchController.layers, hasLength(1));
-      expect(sketchController.layers.first.painter.strokes, hasLength(1));
+      expect(sketchController.layers.first.painter.curves, hasLength(1));
     });
   });
 
@@ -64,7 +64,7 @@ void main() {
       eraser.panUpdate(const PointerMoveEvent(position: Offset(10, 0)));
       eraser.panEnd(const PointerUpEvent());
       expect(sketchController.layers, hasLength(1));
-      expect(sketchController.layers.first.painter.strokes, isEmpty);
+      expect(sketchController.layers.first.painter.curves, isEmpty);
     });
   });
 
@@ -75,7 +75,7 @@ void main() {
       final operation = StrokeOperation(stroke, sketchController.nextLayerId);
       sketchController.commitOperation(operation);
       expect(sketchController.layers, hasLength(1));
-      expect(sketchController.layers.first.painter.strokes, hasLength(1));
+      expect(sketchController.layers.first.painter.curves, hasLength(1));
     });
 
     test('should undo the add operation', () {
@@ -119,9 +119,9 @@ void main() {
       importer.import(sketchController,
           '<?xml version="1.0"?><svg viewport-fill="#00FF00"><path d="M0 0 L10 0" stroke="#FF0000" stroke-opacity="1.0" stroke-width="1" fill="none"/></svg>');
       expect(sketchController.layers, hasLength(1));
-      expect(sketchController.layers.first.painter.strokes, hasLength(1));
-      final stroke = sketchController.layers.first.painter.strokes.first;
-      expect(stroke.color, const Color(0xFFFF0000));
+      expect(sketchController.layers.first.painter.curves, hasLength(1));
+      final stroke = sketchController.layers.first.painter.curves.first;
+      expect((stroke as Stroke).color, const Color(0xFFFF0000));
       expect(stroke.points, const [Offset(0, 0), Offset(10, 0)]);
       expect(stroke.weight, 1.0);
     });

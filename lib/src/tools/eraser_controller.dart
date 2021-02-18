@@ -1,6 +1,6 @@
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
-import 'package:sketcher/src/models/stroke.dart';
+import 'package:sketcher/src/models/curve.dart';
 import 'package:sketcher/src/tools/tool_controller.dart';
 import 'package:sketcher/src/ui/operations/eraser_operation.dart';
 import 'package:sketcher/src/ui/reactive_painter.dart';
@@ -40,33 +40,20 @@ class EraserController implements ToolController {
   void _searchDeleteStroke(Offset offset) {
     final layers = List<SketchLayer>.from(_sketchController.layers, growable: false);
     for (var layer in layers) {
-      final aliveStrokes = <Stroke>[];
-      final deletedStrokes = <Stroke>[];
-      for (var stroke in layer.painter.strokes) {
-        final isAffected = stroke.points.any((point) => (offset - point).distance < _tolerance);
+      final aliveCurves = <Curve>[];
+      final deletedCurves = <Curve>[];
+      for (var curve in layer.painter.curves) {
+        final isAffected = curve.points.any((point) => (offset - point).distance < _tolerance);
         if (isAffected) {
-          deletedStrokes.add(stroke);
+          deletedCurves.add(curve);
         } else {
-          aliveStrokes.add(stroke);
+          aliveCurves.add(curve);
         }
       }
-      if (deletedStrokes.isNotEmpty) {
-        // final layer = Layer(_sketchController.)
-        final operation = EraserOperation(layer, aliveStrokes, _sketchController.nextLayerId);
+      if (deletedCurves.isNotEmpty) {
+        final operation = EraserOperation(layer, aliveCurves, _sketchController.nextLayerId);
         _sketchController.commitOperation(operation);
       }
-      // final deletingStokes = layer.painter.strokes
-      //     .where((stroke) => !stroke.isDeleted)
-      //     .where((stroke) => )
-      //     .toList(growable: false);
-      // if (deletingStokes.isNotEmpty) {
-      //   deletingStokes.forEach((stroke) => stroke.isDeleted = true);
-      //   _sketchController.staticPainters.remove(staticPainter);
-      //   final aliveStrokes = staticPainter.strokes.where((stroke) => !stroke.isDeleted).toList(growable: true);
-      //   _sketchController.staticPainters.add(StaticPainter(aliveStrokes));
-      //   _onStateUpdated();
-      //   _sketchController.notify();
-      // }
     }
   }
 

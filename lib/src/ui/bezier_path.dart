@@ -9,8 +9,7 @@ class BezierPath {
       return;
     }
     try {
-      final knots =
-          stroke.points.map((offset) => EPointF(offset.dx, offset.dy)).toList();
+      final knots = stroke.points.map((offset) => EPointF(offset.dx, offset.dy)).toList();
       if (knots.isEmpty) return;
 
       final polyBezierPath = Path();
@@ -31,8 +30,7 @@ class BezierPath {
 
         for (var i = 0; i < n; i++) {
           final targetKnot = knots[i + 1];
-          appendCurveToPath(polyBezierPath, controlPoints[i],
-              controlPoints[n + i], targetKnot);
+          appendCurveToPath(polyBezierPath, controlPoints[i], controlPoints[n + i], targetKnot);
         }
       }
       // polyBezierPath.lineTo(firstKnot.getX(), firstKnot.getY());
@@ -68,17 +66,13 @@ class BezierPath {
     newTarget[0] = target[0].scaleBy(1 / mainDiag[0]);
 
     for (var i = 1; i < n - 1; i++) {
-      newUpperDiag[i] =
-          upperDiag[i] / (mainDiag[i] - lowerDiag[i - 1] * newUpperDiag[i - 1]!);
+      newUpperDiag[i] = upperDiag[i] / (mainDiag[i] - lowerDiag[i - 1] * newUpperDiag[i - 1]!);
     }
 
     for (var i = 1; i < n; i++) {
-      final targetScale =
-          1 / (mainDiag[i] - lowerDiag[i - 1] * newUpperDiag[i - 1]!);
+      final targetScale = 1 / (mainDiag[i] - lowerDiag[i - 1] * newUpperDiag[i - 1]!);
 
-      newTarget[i] =
-          (target[i].minus(newTarget[i - 1]!.scaleBy(lowerDiag[i - 1])))
-              .scaleBy(targetScale);
+      newTarget[i] = (target[i].minus(newTarget[i - 1]!.scaleBy(lowerDiag[i - 1]))).scaleBy(targetScale);
     }
 
     // backward sweep for control points c_i,0:
@@ -148,10 +142,9 @@ class BezierPath {
     return result as List<double>;
   }
 
-  static void appendCurveToPath(
-      Path path, EPointF control1, EPointF control2, EPointF targetKnot) {
-    path.cubicTo(control1.getX(), control1.getY(), control2.getX(),
-        control2.getY(), targetKnot.getX(), targetKnot.getY());
+  static void appendCurveToPath(Path path, EPointF control1, EPointF control2, EPointF targetKnot) {
+    path.cubicTo(
+        control1.getX(), control1.getY(), control2.getX(), control2.getY(), targetKnot.getX(), targetKnot.getY());
   }
 }
 
