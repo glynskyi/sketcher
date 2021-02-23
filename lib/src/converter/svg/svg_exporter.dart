@@ -27,17 +27,23 @@ class SvgExporter implements Exporter {
     return builder.buildDocument().outerXml;
   }
 
-  void _exportViewBox(XmlBuilder builder, SketchController controller) {
-    final overallRect = controller.layers.map((layer) {
-      return layer.painter.curves.map((curve) {
-        return curve.points.map((offset) => Rect.fromPoints(Offset.zero, offset)).reduce(_expandToInclude);
+  bool _exportViewBox(XmlBuilder builder, SketchController controller) {
+    try {
+      final overallRect = controller.layers.map((layer) {
+        return layer.painter.curves.map((curve) {
+          return curve.points.map((offset) => Rect.fromPoints(Offset.zero, offset)).reduce(_expandToInclude);
+        }).reduce(_expandToInclude);
       }).reduce(_expandToInclude);
-    }).reduce(_expandToInclude);
-    final width = overallRect.width.ceil();
-    final height = overallRect.height.ceil();
-    builder.attribute("width", width);
-    builder.attribute("height", height);
-    builder.attribute("viewBox", "0 0 $width $height");
+      final width = overallRect.width.ceil();
+      final height = overallRect.height.ceil();
+      builder.attribute("width", width);
+      builder.attribute("height", height);
+      builder.attribute("viewBox", "0 0 $width $height");
+      return true;
+    } on StateError {
+      // doesn't have enough points to calculate a view box
+      return false;
+    }
   }
 
   Rect _expandToInclude(Rect rect1, Rect rect2) {

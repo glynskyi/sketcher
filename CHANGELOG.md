@@ -1,3 +1,7 @@
+## 1.1.7
+
+* fixed the view box calculation
+
 ## 1.1.6
 
 * added the view box to exported SVG 

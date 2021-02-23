@@ -1,6 +1,6 @@
 name: sketcher
 description: Sketch your ideas to life with the sketcher package. Provides the handwriting widget that allows to import\export content to SVG.
-version: 1.1.6
+version: 1.1.7
 homepage: https://github.com/glynskyi/sketcher
 
 environment:
@@ -10,7 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  xml: ^5.0.0-nullsafety.1
+  xml: ^5.0.2
   equatable: ^2.0.0-nullsafety.3
   path_parsing: ^0.2.0-nullsafety.0
   flutter_svg: ^0.20.0-nullsafety.3
