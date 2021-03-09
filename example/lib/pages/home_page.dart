@@ -88,15 +88,15 @@ class _HomePageState extends State<HomePage> {
           const Spacer(),
           IconButton(
             icon: const Icon(Icons.approval),
-            onPressed: () => _sketchController.setActiveTool(SketchTool.Eraser),
+            onPressed: () => _sketchController.setActiveTool(SketchTool.eraser),
           ),
           IconButton(
             icon: const Icon(Icons.highlight),
-            onPressed: () => _sketchController.setActiveTool(SketchTool.Highlighter),
+            onPressed: () => _sketchController.setActiveTool(SketchTool.highlighter),
           ),
           IconButton(
             icon: const Icon(Icons.edit),
-            onPressed: () => _sketchController.setActiveTool(SketchTool.Pencil),
+            onPressed: () => _sketchController.setActiveTool(SketchTool.pencil),
           ),
         ],
       ),

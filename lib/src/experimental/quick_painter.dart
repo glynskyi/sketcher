@@ -38,43 +38,37 @@ class _QuickPainter extends ChangeNotifier implements CustomPainter {
 //    _paint.strokeCap = StrokeCap.round;
 //    canvas.drawLine(prev.offset, next.offset, _paint);
 
-    try {
-      final knots = _allPoints
-          .map((point) => EPointF(point.offset.dx, point.offset.dy))
-          .toList();
-      if (knots.isEmpty) return;
+    final knots = _allPoints
+        .map((point) => EPointF(point.offset.dx, point.offset.dy))
+        .toList();
+    if (knots.isEmpty) return;
 
-      final polyBezierPath = Path();
-      final firstKnot = knots[0];
-      polyBezierPath.moveTo(firstKnot.getX(), firstKnot.getY());
+    final polyBezierPath = Path();
+    final firstKnot = knots[0];
+    polyBezierPath.moveTo(firstKnot.getX(), firstKnot.getY());
 
-      /*
+    /*
      * variable representing the number of Bezier curves we will join
      * together
      */
-      final n = knots.length - 1;
+    final n = knots.length - 1;
 
-      if (n == 1) {
-        final lastKnot = knots[1];
-        polyBezierPath.lineTo(lastKnot.getX(), lastKnot.getY());
-      } else {
-        final controlPoints = computeControlPoints(n, knots);
+    if (n == 1) {
+      final lastKnot = knots[1];
+      polyBezierPath.lineTo(lastKnot.getX(), lastKnot.getY());
+    } else {
+      final controlPoints = computeControlPoints(n, knots);
 
-        for (var i = 0; i < n; i++) {
-          final targetKnot = knots[i + 1];
-          appendCurveToPath(polyBezierPath, controlPoints[i],
-              controlPoints[n + i], targetKnot);
-        }
+      for (var i = 0; i < n; i++) {
+        final targetKnot = knots[i + 1];
+        appendCurveToPath(
+            polyBezierPath, controlPoints[i], controlPoints[n + i], targetKnot);
       }
-
-      // polyBezierPath.lineTo(firstKnot.getX(), firstKnot.getY());
-      canvas.drawPath(polyBezierPath, _paint);
-      // !!! return polyBezierPath;
-    } on Object catch (ex, stacktrace) {
-      print("paint, ex: $ex, stacktrace: $stacktrace");
-//      print(e);
-//      print(stacktrace);
     }
+
+    // polyBezierPath.lineTo(firstKnot.getX(), firstKnot.getY());
+    canvas.drawPath(polyBezierPath, _paint);
+    // !!! return polyBezierPath;
   }
 
   List<EPointF> computeControlPoints(int n, List<EPointF> knots) {
@@ -93,8 +87,8 @@ class _QuickPainter extends ChangeNotifier implements CustomPainter {
     newTarget[0] = target[0].scaleBy(1 / mainDiag[0]);
 
     for (var i = 1; i < n - 1; i++) {
-      newUpperDiag[i] =
-          upperDiag[i] / (mainDiag[i] - lowerDiag[i - 1] * newUpperDiag[i - 1]!);
+      newUpperDiag[i] = upperDiag[i] /
+          (mainDiag[i] - lowerDiag[i - 1] * newUpperDiag[i - 1]!);
     }
 
     for (var i = 1; i < n; i++) {

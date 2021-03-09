@@ -7,7 +7,7 @@ packages:
       name: archive
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.0"
+    version: "3.1.2"
   async:
     dependency: transitive
     description:
@@ -70,7 +70,7 @@ packages:
       name: equatable
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.0-nullsafety.3"
+    version: "2.0.0"
   fake_async:
     dependency: transitive
     description:
@@ -123,7 +123,7 @@ packages:
       name: ktx
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.0-nullsafety"
+    version: "1.1.5"
   matcher:
     dependency: transitive
     description:
@@ -193,7 +193,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "1.1.6"
+    version: "1.1.8"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -284,5 +284,5 @@ packages:
     source: hosted
     version: "5.0.2"
 sdks:
-  dart: ">=2.12.0-259.14.beta <3.0.0"
+  dart: ">=2.12.0 <3.0.0"
   flutter: ">=1.24.0-7.0"

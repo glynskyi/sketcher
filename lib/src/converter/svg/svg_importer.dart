@@ -15,7 +15,7 @@ class SvgImporter implements Importer {
   void import(SketchController controller, String svg) {
     final document = XmlDocument.parse(svg);
     final curves = <Curve>[];
-    for (var pathNode in document.rootElement.children) {
+    for (final pathNode in document.rootElement.children) {
       pathNode.getAttribute("stroke")?.let((stroke) {
         if (stroke == "none") {
           curves.add(_readPathCurve(pathNode));
@@ -25,7 +25,9 @@ class SvgImporter implements Importer {
       });
     }
     final viewportFill = document.rootElement.getAttribute("viewport-fill");
-    final backgroundColor = viewportFill != null ? _svgColorToFlutterColor(viewportFill) : material.Colors.transparent;
+    final backgroundColor = viewportFill != null
+        ? _svgColorToFlutterColor(viewportFill)
+        : material.Colors.transparent;
     controller.init(curves, backgroundColor);
   }
 
@@ -35,7 +37,8 @@ class SvgImporter implements Importer {
 
   Curve _readStroke(XmlNode pathNode) {
     final stroke = pathNode.getAttribute("stroke")!;
-    final strokeOpacity = double.parse(pathNode.getAttribute("stroke-opacity")!);
+    final strokeOpacity =
+        double.parse(pathNode.getAttribute("stroke-opacity")!);
     final strokeWidth = double.parse(pathNode.getAttribute("stroke-width")!);
 
     final d = pathNode.getAttribute("d")!;
@@ -49,7 +52,8 @@ class SvgImporter implements Importer {
       points.add(Offset(dx.toDouble(), dy.toDouble()));
     }
 
-    final strokeColor = _svgColorToFlutterColor(stroke).withOpacity(strokeOpacity);
+    final strokeColor =
+        _svgColorToFlutterColor(stroke).withOpacity(strokeOpacity);
     return Stroke(points, strokeColor, strokeWidth);
   }
 

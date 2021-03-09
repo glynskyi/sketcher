@@ -1,8 +1,8 @@
 enum SketchTool {
-  None,
-  Pencil,
-  Highlighter,
-  Eraser,
+  none,
+  pencil,
+  highlighter,
+  eraser,
 }
 
 extension SketchToolExtension on SketchTool {
@@ -13,13 +13,13 @@ extension SketchToolExtension on SketchTool {
     required T Function(SketchTool) eraser,
   }) {
     switch (this) {
-      case SketchTool.None:
+      case SketchTool.none:
         return none(this);
-      case SketchTool.Pencil:
+      case SketchTool.pencil:
         return pencil(this);
-      case SketchTool.Highlighter:
+      case SketchTool.highlighter:
         return highlighter(this);
-      case SketchTool.Eraser:
+      case SketchTool.eraser:
         return eraser(this);
       default:
         throw ArgumentError.value(this, "map");

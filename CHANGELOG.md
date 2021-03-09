@@ -1,3 +1,7 @@
+## 1.1.8
+
+* migrated to the Lint package
+
 ## 1.1.7
 
 * fixed the view box calculation

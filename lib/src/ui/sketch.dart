@@ -24,7 +24,7 @@ class Sketch extends StatefulWidget {
 
 class _SketchState extends State<Sketch> {
   Widget? touch;
-  SketchTool _activeTool = SketchTool.None;
+  SketchTool _activeTool = SketchTool.none;
   ToolController? _toolController;
 
   double _offset = 0;
@@ -34,17 +34,21 @@ class _SketchState extends State<Sketch> {
 
   void panStart(PointerDownEvent details) {
     if (_gestureAction == null) {
-      _gestureAction = GestureAction.Drawing;
+      _gestureAction = GestureAction.drawing;
       _gesturePointerDownEvent = details;
-      if (_activeTool == SketchTool.Pencil || _activeTool == SketchTool.Highlighter) {
-        _toolController = PencilController(widget.controller, () => widget.controller.notify());
+      if (_activeTool == SketchTool.pencil ||
+          _activeTool == SketchTool.highlighter) {
+        _toolController = PencilController(
+            widget.controller, () => widget.controller.notify());
       }
-      if (_activeTool == SketchTool.Eraser) {
-        _toolController = EraserController(widget.controller, () => widget.controller.notify());
+      if (_activeTool == SketchTool.eraser) {
+        _toolController = EraserController(
+            widget.controller, () => widget.controller.notify());
       }
       _toolController!.panStart(details);
-    } else if (_gestureAction == GestureAction.Drawing && _isCloserToInitialGesture(details)) {
-      _gestureAction = GestureAction.Scrolling;
+    } else if (_gestureAction == GestureAction.drawing &&
+        _isCloserToInitialGesture(details)) {
+      _gestureAction = GestureAction.scrolling;
       _initialScroll = widget.scrollController.offset;
       _toolController!.panReset();
       _toolController = null;
@@ -52,16 +56,18 @@ class _SketchState extends State<Sketch> {
   }
 
   bool _isCloserToInitialGesture(PointerDownEvent details) {
-    return (details.timeStamp - _gesturePointerDownEvent!.timeStamp).inMilliseconds < 400;
+    return (details.timeStamp - _gesturePointerDownEvent!.timeStamp)
+            .inMilliseconds <
+        400;
   }
 
   void panUpdate(PointerMoveEvent details) {
-    if (_gestureAction == GestureAction.Drawing) {
+    if (_gestureAction == GestureAction.drawing) {
       if (_gesturePointerDownEvent!.pointer != details.pointer) {
         return;
       }
       _toolController?.panUpdate(details);
-    } else if (_gestureAction == GestureAction.Scrolling) {
+    } else if (_gestureAction == GestureAction.scrolling) {
       if (_gesturePointerDownEvent?.pointer == details.pointer) {
         final offset = _gesturePointerDownEvent!.position - details.position;
         widget.scrollController.jumpTo(_initialScroll! + offset.dy / 2);
@@ -101,7 +107,6 @@ class _SketchState extends State<Sketch> {
   }
 
   void _handleControllerChange() {
-    print("_handleControllerChange()");
     setState(() {
       _activeTool = widget.controller.activeTool;
       final config = widget.controller.activeToolStyle;
@@ -127,11 +132,12 @@ class _SketchState extends State<Sketch> {
         child: Stack(
           children: [
             ...RepaintBoundary.wrapAll(widget.controller.layers
-                .map((layer) => CustomPaint(key: ValueKey(layer.id), painter: layer.painter))
+                .map((layer) => CustomPaint(
+                    key: ValueKey(layer.id), painter: layer.painter))
                 .toList(growable: false)),
             CustomPaint(
               painter: _toolController?.toolPainter,
-              child: _activeTool == SketchTool.None ? null : touch,
+              child: _activeTool == SketchTool.none ? null : touch,
             ),
           ],
         ),

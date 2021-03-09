@@ -1,4 +1,4 @@
 enum GestureAction {
-  Drawing,
-  Scrolling,
+  drawing,
+  scrolling,
 }

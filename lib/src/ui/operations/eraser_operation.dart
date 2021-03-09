@@ -13,7 +13,6 @@ class EraserOperation implements Operation {
 
   @override
   void redo(SketchController controller) {
-    print("redo: _originLayer $_originLayer");
     final painter = StaticPainter(_aliveStrokes);
     final layer = SketchLayer(_nextLayerId, painter);
     final index = controller.layers.indexOf(_originLayer);
@@ -23,8 +22,8 @@ class EraserOperation implements Operation {
 
   @override
   void undo(SketchController controller) {
-    print("undo: _originLayer $_originLayer");
-    final index = controller.layers.indexWhere((layer) => layer.id == _nextLayerId);
+    final index =
+        controller.layers.indexWhere((layer) => layer.id == _nextLayerId);
     controller.layers[index] = _originLayer;
     controller.notify();
   }

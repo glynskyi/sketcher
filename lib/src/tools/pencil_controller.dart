@@ -15,7 +15,8 @@ class PencilController implements ToolController {
 
   @override
   void panStart(PointerDownEvent details) {
-    toolPainter = ReactivePainter(_sketchController.activeToolStyle);
+    toolPainter =
+        ReactivePainter(strokeStyle: _sketchController.activeToolStyle);
     toolPainter!.startStroke(details.localPosition);
     _onStateUpdated();
   }

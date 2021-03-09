@@ -16,7 +16,7 @@ class SketchController extends material.ChangeNotifier {
   final _layers = <SketchLayer>[];
   final _undoStack = <Operation>[];
   final _redoStack = <Operation>[];
-  SketchTool _activeTool = SketchTool.None;
+  SketchTool _activeTool = SketchTool.none;
   StrokeStyle _pencilStyle;
   StrokeStyle _highlighterStyle;
   int _lastLayerId = 0;
@@ -27,8 +27,10 @@ class SketchController extends material.ChangeNotifier {
   SketchController({
     StrokeStyle? pencilStyle,
     StrokeStyle? highlighterStyle,
-  })  : _pencilStyle = pencilStyle ?? const StrokeStyle(1, material.Colors.black, 2),
-        _highlighterStyle = highlighterStyle ?? const StrokeStyle(0.3, material.Colors.black, 18);
+  })  : _pencilStyle =
+            pencilStyle ?? const StrokeStyle(1, material.Colors.black, 2),
+        _highlighterStyle = highlighterStyle ??
+            const StrokeStyle(0.3, material.Colors.black, 18);
 
   int get nextLayerId => ++_lastLayerId;
 
@@ -89,25 +91,25 @@ class SketchController extends material.ChangeNotifier {
   // ignore: missing_return
   StrokeStyle? get activeToolStyle {
     switch (_activeTool) {
-      case SketchTool.None:
-      case SketchTool.Eraser:
+      case SketchTool.none:
+      case SketchTool.eraser:
         return null;
-      case SketchTool.Pencil:
+      case SketchTool.pencil:
         return _pencilStyle;
-      case SketchTool.Highlighter:
+      case SketchTool.highlighter:
         return _highlighterStyle;
     }
   }
 
   set activeToolStyle(StrokeStyle? config) {
     switch (_activeTool) {
-      case SketchTool.None:
-      case SketchTool.Eraser:
+      case SketchTool.none:
+      case SketchTool.eraser:
         break;
-      case SketchTool.Pencil:
+      case SketchTool.pencil:
         _pencilStyle = config!;
         break;
-      case SketchTool.Highlighter:
+      case SketchTool.highlighter:
         _highlighterStyle = config!;
         break;
     }
@@ -115,7 +117,6 @@ class SketchController extends material.ChangeNotifier {
   }
 
   void notify() {
-    print("notify(): layers = $layers");
     notifyListeners();
   }
 

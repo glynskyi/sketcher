@@ -8,46 +8,41 @@ class BezierPath {
     if (stroke.points.length < 2) {
       return;
     }
-    try {
-      final knots = stroke.points.map((offset) => EPointF(offset.dx, offset.dy)).toList();
-      if (knots.isEmpty) return;
+    final knots =
+        stroke.points.map((offset) => EPointF(offset.dx, offset.dy)).toList();
+    if (knots.isEmpty) return;
 
-      final polyBezierPath = Path();
-      final firstKnot = knots[0];
-      polyBezierPath.moveTo(firstKnot.getX(), firstKnot.getY());
+    final polyBezierPath = Path();
+    final firstKnot = knots[0];
+    polyBezierPath.moveTo(firstKnot.getX(), firstKnot.getY());
 
-      /*
+    /*
        * variable representing the number of Bezier curves we will join
        * together
        */
-      final n = knots.length - 1;
+    final n = knots.length - 1;
 
-      if (n == 1) {
-        final lastKnot = knots[1];
-        polyBezierPath.lineTo(lastKnot.getX(), lastKnot.getY());
-      } else {
-        final controlPoints = computeControlPoints(n, knots);
+    if (n == 1) {
+      final lastKnot = knots[1];
+      polyBezierPath.lineTo(lastKnot.getX(), lastKnot.getY());
+    } else {
+      final controlPoints = computeControlPoints(n, knots);
 
-        for (var i = 0; i < n; i++) {
-          final targetKnot = knots[i + 1];
-          appendCurveToPath(polyBezierPath, controlPoints[i], controlPoints[n + i], targetKnot);
-        }
+      for (var i = 0; i < n; i++) {
+        final targetKnot = knots[i + 1];
+        appendCurveToPath(
+            polyBezierPath, controlPoints[i], controlPoints[n + i], targetKnot);
       }
-      // polyBezierPath.lineTo(firstKnot.getX(), firstKnot.getY());
-
-      final _paint = Paint()
-        ..color = stroke.color
-        ..style = PaintingStyle.stroke
-        ..strokeCap = StrokeCap.round
-        ..strokeWidth = stroke.weight;
-
-      canvas.drawPath(polyBezierPath, _paint);
-      // !!! return polyBezierPath;
-    } on Object catch (ex, stacktrace) {
-      print("paintBezierPath, ex: $ex, stacktrace: $stacktrace");
-//      print(e);
-//      print(stacktrace);
     }
+    // polyBezierPath.lineTo(firstKnot.getX(), firstKnot.getY());
+
+    final _paint = Paint()
+      ..color = stroke.color
+      ..style = PaintingStyle.stroke
+      ..strokeCap = StrokeCap.round
+      ..strokeWidth = stroke.weight;
+
+    canvas.drawPath(polyBezierPath, _paint);
   }
 
   static List<EPointF> computeControlPoints(int n, List<EPointF> knots) {
@@ -66,13 +61,17 @@ class BezierPath {
     newTarget[0] = target[0].scaleBy(1 / mainDiag[0]);
 
     for (var i = 1; i < n - 1; i++) {
-      newUpperDiag[i] = upperDiag[i] / (mainDiag[i] - lowerDiag[i - 1] * newUpperDiag[i - 1]!);
+      newUpperDiag[i] = upperDiag[i] /
+          (mainDiag[i] - lowerDiag[i - 1] * newUpperDiag[i - 1]!);
     }
 
     for (var i = 1; i < n; i++) {
-      final targetScale = 1 / (mainDiag[i] - lowerDiag[i - 1] * newUpperDiag[i - 1]!);
+      final targetScale =
+          1 / (mainDiag[i] - lowerDiag[i - 1] * newUpperDiag[i - 1]!);
 
-      newTarget[i] = (target[i].minus(newTarget[i - 1]!.scaleBy(lowerDiag[i - 1]))).scaleBy(targetScale);
+      newTarget[i] =
+          (target[i].minus(newTarget[i - 1]!.scaleBy(lowerDiag[i - 1])))
+              .scaleBy(targetScale);
     }
 
     // backward sweep for control points c_i,0:
@@ -142,9 +141,10 @@ class BezierPath {
     return result as List<double>;
   }
 
-  static void appendCurveToPath(Path path, EPointF control1, EPointF control2, EPointF targetKnot) {
-    path.cubicTo(
-        control1.getX(), control1.getY(), control2.getX(), control2.getY(), targetKnot.getX(), targetKnot.getY());
+  static void appendCurveToPath(
+      Path path, EPointF control1, EPointF control2, EPointF targetKnot) {
+    path.cubicTo(control1.getX(), control1.getY(), control2.getX(),
+        control2.getY(), targetKnot.getX(), targetKnot.getY());
   }
 }
 

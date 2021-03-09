@@ -13,14 +13,14 @@ void main() {
   group('PencilController', () {
     test('should not provide a tool painter by default', () {
       final sketchController = SketchController();
-      sketchController.setActiveTool(SketchTool.Pencil);
+      sketchController.setActiveTool(SketchTool.pencil);
       final pencil = PencilController(sketchController, () {});
       expect(pencil.toolPainter, isNull);
     });
 
     test('should provide a tool painter after activation', () {
       final sketchController = SketchController();
-      sketchController.setActiveTool(SketchTool.Pencil);
+      sketchController.setActiveTool(SketchTool.pencil);
       final pencil = PencilController(sketchController, () {});
       pencil.panStart(const PointerDownEvent());
       expect(pencil.toolPainter, isNotNull);
@@ -28,9 +28,9 @@ void main() {
 
     test('should add a stroke', () {
       final sketchController = SketchController();
-      sketchController.setActiveTool(SketchTool.Pencil);
+      sketchController.setActiveTool(SketchTool.pencil);
       final pencil = PencilController(sketchController, () {});
-      pencil.panStart(const PointerDownEvent(position: Offset(0, 0)));
+      pencil.panStart(const PointerDownEvent());
       pencil.panUpdate(const PointerMoveEvent(position: Offset(10, 0)));
       pencil.panEnd(const PointerUpEvent());
       expect(sketchController.layers, hasLength(1));
@@ -41,14 +41,14 @@ void main() {
   group('EraserController', () {
     test('should not provide a tool painter by default', () {
       final sketchController = SketchController();
-      sketchController.setActiveTool(SketchTool.Eraser);
+      sketchController.setActiveTool(SketchTool.eraser);
       final eraser = EraserController(sketchController, () {});
       expect(eraser.toolPainter, isNull);
     });
 
     test('should not provide a tool painter after activation', () {
       final sketchController = SketchController();
-      sketchController.setActiveTool(SketchTool.Eraser);
+      sketchController.setActiveTool(SketchTool.eraser);
       final eraser = EraserController(sketchController, () {});
       eraser.panStart(const PointerDownEvent());
       expect(eraser.toolPainter, isNull);
@@ -58,9 +58,9 @@ void main() {
       final sketchController = SketchController();
       const stroke = Stroke([Offset(0, 0), Offset(10, 10)], Colors.red, 1);
       sketchController.commitOperation(StrokeOperation(stroke, sketchController.nextLayerId));
-      sketchController.setActiveTool(SketchTool.Eraser);
+      sketchController.setActiveTool(SketchTool.eraser);
       final eraser = EraserController(sketchController, () {});
-      eraser.panStart(const PointerDownEvent(position: Offset(0, 0)));
+      eraser.panStart(const PointerDownEvent());
       eraser.panUpdate(const PointerMoveEvent(position: Offset(10, 0)));
       eraser.panEnd(const PointerUpEvent());
       expect(sketchController.layers, hasLength(1));
@@ -108,7 +108,7 @@ void main() {
       sketchController.commitOperation(operation);
       final exporter = SvgExporter();
       final svg = exporter.export(sketchController, exportBackgroundColor: true);
-      expect(svg, contains("viewport-fill=\"#00FF00\""));
+      expect(svg, contains('viewport-fill="#00FF00"'));
     });
   });
 

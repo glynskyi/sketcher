@@ -11,7 +11,7 @@ class StaticPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    for (var curve in curves) {
+    for (final curve in curves) {
       if (curve is Stroke) {
         BezierPath.paintBezierPath(canvas, curve);
       } else if (curve is PathCurve) {

@@ -10,16 +10,18 @@ import 'package:xml/xml.dart';
 /// A utility class for decoding a [SketchController] to SVG data
 class SvgExporter implements Exporter {
   @override
-  String export(SketchController controller, {bool exportBackgroundColor = false}) {
+  String export(SketchController controller,
+      {bool exportBackgroundColor = false}) {
     final builder = XmlBuilder();
     builder.processing('xml', 'version="1.0"');
     builder.element("svg", nest: () {
       if (exportBackgroundColor) {
-        builder.attribute("viewport-fill", _flutterColorToSvgColor(controller.backgroundColor.value));
+        builder.attribute("viewport-fill",
+            _flutterColorToSvgColor(controller.backgroundColor.value));
       }
       _exportViewBox(builder, controller);
-      for (var layer in controller.layers) {
-        for (var stroke in layer.painter.curves) {
+      for (final layer in controller.layers) {
+        for (final stroke in layer.painter.curves) {
           _toPath(builder, stroke);
         }
       }
@@ -31,7 +33,9 @@ class SvgExporter implements Exporter {
     try {
       final overallRect = controller.layers.map((layer) {
         return layer.painter.curves.map((curve) {
-          return curve.points.map((offset) => Rect.fromPoints(Offset.zero, offset)).reduce(_expandToInclude);
+          return curve.points
+              .map((offset) => Rect.fromPoints(Offset.zero, offset))
+              .reduce(_expandToInclude);
         }).reduce(_expandToInclude);
       }).reduce(_expandToInclude);
       final width = overallRect.width.ceil();
@@ -40,7 +44,7 @@ class SvgExporter implements Exporter {
       builder.attribute("height", height);
       builder.attribute("viewBox", "0 0 $width $height");
       return true;
-    } on StateError {
+    } on Object {
       // doesn't have enough points to calculate a view box
       return false;
     }
@@ -55,16 +59,19 @@ class SvgExporter implements Exporter {
       builder.element(
         "path",
         attributes: {
-          for (var attr in curve.originPath.attributes) attr.name.local: attr.value,
+          for (var attr in curve.originPath.attributes)
+            attr.name.local: attr.value,
         },
       );
     } else if (curve is Stroke) {
-      var d = "M${curve.points.first.dx.toInt()} ${curve.points.first.dy.toInt()}";
-      for (var point in curve.points.skip(1)) {
-        d += " L${point.dx.toInt()} ${point.dy.toInt()}";
+      final d = StringBuffer();
+      d.write(
+          "M${curve.points.first.dx.toInt()} ${curve.points.first.dy.toInt()}");
+      for (final point in curve.points.skip(1)) {
+        d.write(" L${point.dx.toInt()} ${point.dy.toInt()}");
       }
       builder.element("path", attributes: {
-        "d": d,
+        "d": d.toString(),
         "stroke": _flutterColorToSvgColor(curve.color.value),
         "stroke-opacity": curve.color.opacity.toString(),
         "stroke-width": curve.weight.toStringAsFixed(0),

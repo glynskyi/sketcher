@@ -17,8 +17,10 @@ class PathCurve extends Curve {
   PathCurve(this.originPath) {
     final visitor = _PathVisitor();
     final rawColor = parseColor(originPath.getAttribute("fill"));
-    final opacity = originPath.getAttribute("fill-opacity")?.let((it) => double.parse(it));
-    color = rawColor?.withOpacity(opacity ?? 1) ?? const Color.fromARGB(255, 0, 0, 0);
+    final opacity =
+        originPath.getAttribute("fill-opacity")?.let((it) => double.parse(it));
+    color = rawColor?.withOpacity(opacity ?? 1) ??
+        const Color.fromARGB(255, 0, 0, 0);
     writeSvgPathDataToPath(originPath.getAttribute("d"), visitor);
     path = visitor.path;
     points = visitor.points;
