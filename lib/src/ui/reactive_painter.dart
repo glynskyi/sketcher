@@ -4,6 +4,8 @@ import 'package:sketcher/src/models/stroke_style.dart';
 import 'package:sketcher/src/ui/bezier_path.dart';
 
 class ReactivePainter extends ChangeNotifier implements CustomPainter {
+  static const _moveThreshold = 2.0;
+
   // Color strokeColor;
   final _strokes = <Stroke>[];
 
@@ -19,17 +21,21 @@ class ReactivePainter extends ChangeNotifier implements CustomPainter {
   bool? hitTest(Offset position) => null;
 
   void startStroke(Offset position) {
-    _strokes.add(Stroke(
-        [position],
-        strokeStyle!.color.withOpacity(strokeStyle!.opacity),
-        strokeStyle!.weight));
+    _strokes.add(Stroke([position], strokeStyle!.color.withOpacity(strokeStyle!.opacity), strokeStyle!.weight));
     notifyListeners();
   }
 
   void appendStroke(Offset position) {
     final stroke = _strokes.last;
-    stroke.points.add(position);
-    notifyListeners();
+    if (stroke.points.isEmpty) {
+      stroke.points.add(position);
+      notifyListeners();
+    } else {
+      if ((stroke.points.last - position).distance >= _moveThreshold) {
+        stroke.points.add(position);
+        notifyListeners();
+      }
+    }
   }
 
   Stroke endStroke() {
