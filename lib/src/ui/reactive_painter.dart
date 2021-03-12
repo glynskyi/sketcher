@@ -21,7 +21,10 @@ class ReactivePainter extends ChangeNotifier implements CustomPainter {
   bool? hitTest(Offset position) => null;
 
   void startStroke(Offset position) {
-    _strokes.add(Stroke([position], strokeStyle!.color.withOpacity(strokeStyle!.opacity), strokeStyle!.weight));
+    _strokes.add(Stroke(
+        [position],
+        strokeStyle!.color.withOpacity(strokeStyle!.opacity),
+        strokeStyle!.weight));
     notifyListeners();
   }
 

@@ -125,21 +125,25 @@ class _SketchState extends State<Sketch> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: widget.controller.backgroundColor,
-      child: Transform.translate(
-        offset: Offset(0, -_offset),
-        child: Stack(
-          children: [
-            ...RepaintBoundary.wrapAll(widget.controller.layers
-                .map((layer) => CustomPaint(
-                    key: ValueKey(layer.id), painter: layer.painter))
-                .toList(growable: false)),
-            CustomPaint(
-              painter: _toolController?.toolPainter,
-              child: _activeTool == SketchTool.none ? null : touch,
-            ),
-          ],
+    return IgnorePointer(
+      ignoring: _activeTool == SketchTool.none,
+      child: Container(
+        color: widget.controller.backgroundColor,
+        child: Transform.translate(
+          offset: Offset(0, -_offset),
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              ...RepaintBoundary.wrapAll(widget.controller.layers
+                  .map((layer) => CustomPaint(
+                      key: ValueKey(layer.id), painter: layer.painter))
+                  .toList(growable: false)),
+              CustomPaint(
+                painter: _toolController?.toolPainter,
+                child: touch,
+              ),
+            ],
+          ),
         ),
       ),
     );

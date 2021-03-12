@@ -1,3 +1,7 @@
+## 1.1.9
+
+* fixed rendering for case when there is no active tool
+
 ## 1.1.8
 
 * migrated to the Lint package
