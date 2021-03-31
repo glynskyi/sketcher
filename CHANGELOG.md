@@ -1,3 +1,7 @@
+## 1.1.10
+
+* fixed the painting outside the first screen 
+
 ## 1.1.9
 
 * fixed rendering for case when there is no active tool

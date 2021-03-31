@@ -23,7 +23,7 @@ class Sketch extends StatefulWidget {
 }
 
 class _SketchState extends State<Sketch> {
-  Widget? touch;
+  late Widget touch;
   SketchTool _activeTool = SketchTool.none;
   ToolController? _toolController;
 
@@ -32,10 +32,16 @@ class _SketchState extends State<Sketch> {
   PointerDownEvent? _gesturePointerDownEvent;
   double? _initialScroll;
 
-  void panStart(PointerDownEvent details) {
+  T translate<T extends PointerEvent>(T originEvent) {
+    return originEvent.transformed(
+        originEvent.transform!.clone()..leftTranslate(0.0, _offset)) as T;
+  }
+
+  void panStart(PointerDownEvent event) {
+    final translatedEvent = translate(event);
     if (_gestureAction == null) {
       _gestureAction = GestureAction.drawing;
-      _gesturePointerDownEvent = details;
+      _gesturePointerDownEvent = translatedEvent;
       if (_activeTool == SketchTool.pencil ||
           _activeTool == SketchTool.highlighter) {
         _toolController = PencilController(
@@ -45,9 +51,9 @@ class _SketchState extends State<Sketch> {
         _toolController = EraserController(
             widget.controller, () => widget.controller.notify());
       }
-      _toolController!.panStart(details);
+      _toolController!.panStart(translatedEvent);
     } else if (_gestureAction == GestureAction.drawing &&
-        _isCloserToInitialGesture(details)) {
+        _isCloserToInitialGesture(translatedEvent)) {
       _gestureAction = GestureAction.scrolling;
       _initialScroll = widget.scrollController.offset;
       _toolController!.panReset();
@@ -61,25 +67,28 @@ class _SketchState extends State<Sketch> {
         400;
   }
 
-  void panUpdate(PointerMoveEvent details) {
+  void panUpdate(PointerMoveEvent event) {
+    final translatedEvent = translate(event);
     if (_gestureAction == GestureAction.drawing) {
-      if (_gesturePointerDownEvent!.pointer != details.pointer) {
+      if (_gesturePointerDownEvent!.pointer != translatedEvent.pointer) {
         return;
       }
-      _toolController?.panUpdate(details);
+      _toolController?.panUpdate(translatedEvent);
     } else if (_gestureAction == GestureAction.scrolling) {
-      if (_gesturePointerDownEvent?.pointer == details.pointer) {
-        final offset = _gesturePointerDownEvent!.position - details.position;
+      if (_gesturePointerDownEvent?.pointer == translatedEvent.pointer) {
+        final offset =
+            _gesturePointerDownEvent!.position - translatedEvent.position;
         widget.scrollController.jumpTo(_initialScroll! + offset.dy / 2);
       }
     }
   }
 
-  void panEnd(PointerUpEvent details) {
-    if (_gesturePointerDownEvent?.pointer != details.pointer) {
+  void panEnd(PointerUpEvent event) {
+    final translatedEvent = translate(event);
+    if (_gesturePointerDownEvent?.pointer != translatedEvent.pointer) {
       return;
     }
-    _toolController?.panEnd(details);
+    _toolController?.panEnd(translatedEvent);
     _toolController = null;
     _gestureAction = null;
     _gesturePointerDownEvent = null;
@@ -129,21 +138,26 @@ class _SketchState extends State<Sketch> {
       ignoring: _activeTool == SketchTool.none,
       child: Container(
         color: widget.controller.backgroundColor,
-        child: Transform.translate(
-          offset: Offset(0, -_offset),
-          child: Stack(
-            fit: StackFit.expand,
-            children: [
-              ...RepaintBoundary.wrapAll(widget.controller.layers
-                  .map((layer) => CustomPaint(
-                      key: ValueKey(layer.id), painter: layer.painter))
-                  .toList(growable: false)),
-              CustomPaint(
-                painter: _toolController?.toolPainter,
-                child: touch,
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            Transform.translate(
+              offset: Offset(0, -_offset),
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+                  ...RepaintBoundary.wrapAll(widget.controller.layers
+                      .map((layer) => CustomPaint(
+                          key: ValueKey(layer.id), painter: layer.painter))
+                      .toList(growable: false)),
+                  CustomPaint(
+                    painter: _toolController?.toolPainter,
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+            touch,
+          ],
         ),
       ),
     );
