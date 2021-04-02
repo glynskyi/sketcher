@@ -68,7 +68,8 @@ class SvgExporter implements Exporter {
       d.write(
           "M${curve.points.first.dx.toInt()} ${curve.points.first.dy.toInt()}");
       for (final point in curve.points.skip(1)) {
-        d.write(" L${point.dx.toInt()} ${point.dy.toInt()}");
+        d.write(
+            " L${point.dx.toStringAsFixed(2)} ${point.dy.toStringAsFixed(2)}");
       }
       builder.element("path", attributes: {
         "d": d.toString(),

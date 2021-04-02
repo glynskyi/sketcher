@@ -47,9 +47,9 @@ class SvgImporter implements Importer {
     for (var i = 0; i < commands.length; i += 2) {
       final first = commands[i];
       final second = commands[i + 1];
-      final dx = int.parse(first.substring(1));
-      final dy = int.parse(second);
-      points.add(Offset(dx.toDouble(), dy.toDouble()));
+      final dx = double.parse(first.substring(1));
+      final dy = double.parse(second);
+      points.add(Offset(dx, dy));
     }
 
     final strokeColor =

@@ -1,3 +1,7 @@
+## 1.1.11
+
+* increased accuracy on the SVG encoding
+
 ## 1.1.10
 
 * fixed the painting outside the first screen 
