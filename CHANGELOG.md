@@ -1,6 +1,7 @@
 ## 1.1.11
 
 * increased accuracy on the SVG encoding
+* added the unique id for paths
 
 ## 1.1.10
 

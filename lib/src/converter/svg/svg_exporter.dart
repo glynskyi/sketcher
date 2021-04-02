@@ -72,6 +72,7 @@ class SvgExporter implements Exporter {
             " L${point.dx.toStringAsFixed(2)} ${point.dy.toStringAsFixed(2)}");
       }
       builder.element("path", attributes: {
+        "id": "sketcher-v1",
         "d": d.toString(),
         "stroke": _flutterColorToSvgColor(curve.color.value),
         "stroke-opacity": curve.color.opacity.toString(),
