@@ -2,6 +2,7 @@
 
 * increased accuracy on the SVG encoding
 * added the unique id for paths
+* added compatibility with 3-rd part paths
 
 ## 1.1.10
 

@@ -19,7 +19,8 @@ class StaticPainter extends CustomPainter {
           curve.path,
           Paint()
             ..color = curve.color
-            ..style = PaintingStyle.fill,
+            ..style = curve.style
+            ..strokeWidth = curve.stokeWidth,
         );
       }
     }

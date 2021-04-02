@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart' as material;
-import 'package:ktx/ktx.dart';
 import 'package:sketcher/src/converter/importer.dart';
 import 'package:sketcher/src/models/curve.dart';
 import 'package:sketcher/src/models/path_curve.dart';
@@ -16,13 +15,13 @@ class SvgImporter implements Importer {
     final document = XmlDocument.parse(svg);
     final curves = <Curve>[];
     for (final pathNode in document.rootElement.children) {
-      pathNode.getAttribute("stroke")?.let((stroke) {
-        if (stroke == "none") {
+      if (pathNode.nodeType == XmlNodeType.ELEMENT) {
+        if (pathNode.getAttribute("id") == "cubiccurveABBC") {
           curves.add(_readPathCurve(pathNode));
         } else {
           curves.add(_readStroke(pathNode));
         }
-      });
+      }
     }
     final viewportFill = document.rootElement.getAttribute("viewport-fill");
     final backgroundColor = viewportFill != null

@@ -13,14 +13,40 @@ class PathCurve extends Curve {
   late final List<Offset> points;
   late final Color color;
   late final Path path;
+  late final PaintingStyle style;
+  late final double stokeWidth;
 
   PathCurve(this.originPath) {
     final visitor = _PathVisitor();
-    final rawColor = parseColor(originPath.getAttribute("fill"));
-    final opacity =
-        originPath.getAttribute("fill-opacity")?.let((it) => double.parse(it));
-    color = rawColor?.withOpacity(opacity ?? 1) ??
-        const Color.fromARGB(255, 0, 0, 0);
+    // fill path
+    if (originPath.getAttribute("fill") != null &&
+        originPath.getAttribute("fill") != "none") {
+      style = PaintingStyle.fill;
+      stokeWidth = 0;
+      final rawColor = parseColor(originPath.getAttribute("fill"));
+      final opacity =
+          originPath.getAttribute("fill-opacity")?.let(double.parse);
+      color = rawColor?.withOpacity(opacity ?? 1) ??
+          const Color.fromARGB(255, 0, 0, 0);
+    }
+    // stoke path
+    else if (originPath.getAttribute("stroke") != null &&
+        originPath.getAttribute("stroke") != "none") {
+      style = PaintingStyle.stroke;
+      stokeWidth =
+          originPath.getAttribute("stroke-width")?.let(double.parse) ?? 1;
+      final rawColor = parseColor(originPath.getAttribute("stroke"));
+      final opacity =
+          originPath.getAttribute("stroke-opacity")?.let(double.parse);
+      color = rawColor?.withOpacity(opacity ?? 1) ??
+          const Color.fromARGB(255, 0, 0, 0);
+    }
+    // default path
+    else {
+      style = PaintingStyle.stroke;
+      stokeWidth = 1;
+      color = const Color.fromARGB(255, 255, 0, 0);
+    }
     writeSvgPathDataToPath(originPath.getAttribute("d"), visitor);
     path = visitor.path;
     points = visitor.points;
