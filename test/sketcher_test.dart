@@ -57,7 +57,8 @@ void main() {
     test('should remove a stroke', () {
       final sketchController = SketchController();
       const stroke = Stroke([Offset(0, 0), Offset(10, 10)], Colors.red, 1);
-      sketchController.commitOperation(StrokeOperation(stroke, sketchController.nextLayerId));
+      sketchController.commitOperation(
+          StrokeOperation(stroke, sketchController.nextLayerId));
       sketchController.setActiveTool(SketchTool.eraser);
       final eraser = EraserController(sketchController, () {});
       eraser.panStart(const PointerDownEvent());
@@ -91,23 +92,26 @@ void main() {
   group('SvgExporter', () {
     test('should export strokes', () {
       final sketchController = SketchController();
-      const stroke = Stroke([Offset(0, 0), Offset(10, 0)], Color(0xFFFF0000), 1.0);
+      const stroke =
+          Stroke([Offset(0, 0), Offset(10, 0)], Color(0xFFFF0000), 1.0);
       final operation = StrokeOperation(stroke, sketchController.nextLayerId);
       sketchController.commitOperation(operation);
       final exporter = SvgExporter();
-      final svg = exporter.export(sketchController);
-      expect(svg, contains("M0 0 L10 0"));
+      final svg = exporter.export(sketchController, precision: 1);
+      expect(svg, contains("M0.0 0.0 L10.0 0.0"));
       expect(svg, contains("#FF0000"));
     });
 
     test('should export background color', () {
       final sketchController = SketchController();
       sketchController.init([], const Color(0xFF00FF00));
-      const stroke = Stroke([Offset(0, 0), Offset(10, 0)], Color(0xFFFF0000), 1.0);
+      const stroke =
+          Stroke([Offset(0, 0), Offset(10, 0)], Color(0xFFFF0000), 1.0);
       final operation = StrokeOperation(stroke, sketchController.nextLayerId);
       sketchController.commitOperation(operation);
       final exporter = SvgExporter();
-      final svg = exporter.export(sketchController, exportBackgroundColor: true);
+      final svg =
+          exporter.export(sketchController, exportBackgroundColor: true);
       expect(svg, contains('viewport-fill="#00FF00"'));
     });
   });

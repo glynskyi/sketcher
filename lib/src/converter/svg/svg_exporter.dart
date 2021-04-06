@@ -11,7 +11,7 @@ import 'package:xml/xml.dart';
 class SvgExporter implements Exporter {
   @override
   String export(SketchController controller,
-      {bool exportBackgroundColor = false}) {
+      {bool exportBackgroundColor = false, int precision = 2}) {
     final builder = XmlBuilder();
     builder.processing('xml', 'version="1.0"');
     builder.element("svg", nest: () {
@@ -22,7 +22,7 @@ class SvgExporter implements Exporter {
       _exportViewBox(builder, controller);
       for (final layer in controller.layers) {
         for (final stroke in layer.painter.curves) {
-          _toPath(builder, stroke);
+          _toPath(builder, stroke, precision);
         }
       }
     });
@@ -54,7 +54,7 @@ class SvgExporter implements Exporter {
     return rect1.expandToInclude(rect2);
   }
 
-  void _toPath(XmlBuilder builder, Curve curve) {
+  void _toPath(XmlBuilder builder, Curve curve, int precision) {
     if (curve is PathCurve) {
       builder.element(
         "path",
@@ -66,10 +66,10 @@ class SvgExporter implements Exporter {
     } else if (curve is Stroke) {
       final d = StringBuffer();
       d.write(
-          "M${curve.points.first.dx.toInt()} ${curve.points.first.dy.toInt()}");
+          "M${curve.points.first.dx.toStringAsFixed(precision)} ${curve.points.first.dy.toStringAsFixed(precision)}");
       for (final point in curve.points.skip(1)) {
         d.write(
-            " L${point.dx.toStringAsFixed(2)} ${point.dy.toStringAsFixed(2)}");
+            " L${point.dx.toStringAsFixed(precision)} ${point.dy.toStringAsFixed(precision)}");
       }
       builder.element("path", attributes: {
         "id": "sketcher-v1",

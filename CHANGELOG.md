@@ -1,3 +1,7 @@
+## 1.1.12
+
+* added the precision for an exported SVG file
+
 ## 1.1.11
 
 * increased accuracy on the SVG encoding
