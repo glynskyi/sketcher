@@ -1,3 +1,7 @@
+## 1.1.13
+
+* added the bounds to sketch layer
+
 ## 1.1.12
 
 * added the precision for an exported SVG file

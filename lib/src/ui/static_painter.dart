@@ -6,8 +6,12 @@ import 'package:sketcher/src/ui/bezier_path.dart';
 
 class StaticPainter extends CustomPainter {
   final List<Curve> curves;
+  final Rect bounds;
 
-  StaticPainter(this.curves);
+  StaticPainter(this.curves)
+      : assert(curves.isNotEmpty),
+        bounds = curves.fold<Rect>(curves.first.bounds,
+            (bounds, curve) => bounds.expandToInclude(curve.bounds));
 
   @override
   void paint(Canvas canvas, Size size) {
