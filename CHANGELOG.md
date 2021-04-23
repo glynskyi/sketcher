@@ -1,3 +1,7 @@
+## 1.1.14
+
+* updated the dependencies
+
 ## 1.1.13
 
 * added the bounds to sketch layer
