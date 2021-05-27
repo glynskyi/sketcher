@@ -1,3 +1,7 @@
+## 1.1.15
+
+* fixed the eraser tool
+
 ## 1.1.14
 
 * updated the dependencies

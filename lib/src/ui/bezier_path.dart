@@ -88,7 +88,7 @@ class BezierPath {
 
     result[2 * n - 1] = knots[n].plus(result[n - 1]!).scaleBy(0.5);
 
-    return result as List<EPointF>;
+    return List.from(result, growable: false);
   }
 
   static List<EPointF> constructTargetVector(int n, List<EPointF> knots) {
@@ -102,7 +102,7 @@ class BezierPath {
 
     result[result.length - 1] = knots[n - 1].scaleBy(8).plus(knots[n]);
 
-    return result as List<EPointF>;
+    return List.from(result, growable: false);
   }
 
   static List<double> constructLowerDiagonalVector(int length) {
@@ -114,7 +114,7 @@ class BezierPath {
 
     result[result.length - 1] = 2.0;
 
-    return result as List<double>;
+    return List.from(result, growable: false);
   }
 
   static List<double> constructMainDiagonalVector(int n) {
@@ -128,7 +128,7 @@ class BezierPath {
 
     result[result.length - 1] = 7.0;
 
-    return result as List<double>;
+    return List.from(result, growable: false);
   }
 
   static List<double> constructUpperDiagonalVector(int length) {
@@ -138,7 +138,7 @@ class BezierPath {
       result[i] = 1.0;
     }
 
-    return result as List<double>;
+    return List.from(result, growable: false);
   }
 
   static void appendCurveToPath(
