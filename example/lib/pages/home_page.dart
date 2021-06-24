@@ -102,10 +102,10 @@ class _HomePageState extends State<HomePage> {
 
 
           const Spacer(),
-          IconButton(
-            icon: const Icon(Icons.cleaning_services_rounded),// restart_alt
-            onPressed: () => _sketchController.setActiveTool(SketchTool.resetall),
-          ),
+//           IconButton(
+//             icon: const Icon(Icons.cleaning_services_rounded),// restart_alt
+//             onPressed: () => _sketchController.setActiveTool(SketchTool.resetall),
+//           ),
           IconButton(
             icon: const Icon(Icons.blur_circular),// brightness_1_outlined,remove
             onPressed: () => _sketchController.setActiveTool(SketchTool.eraser),
