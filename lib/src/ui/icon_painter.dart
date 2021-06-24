@@ -22,29 +22,3 @@ class IconPainter extends CustomPainter {
 
 
 }
-// class IconPainter extends CustomPainter {
-//   var myPaint = Paint()
-//     ..color = Colors.black
-//     ..style = PaintingStyle.stroke
-//     ..strokeWidth = 5.0;
-//
-//   double radius = 80;
-//  // Offset offset;
-//   @override
-//   void paint(Canvas canvas, Size size) {
-//     int n = 10;
-//     var range = List<int>.generate(n, (i) => i + 1);
-//     for (int i in range) {
-//       double x = 2 * pi / n;
-//       double dx = radius * cos(i * x);
-//       double dy = radius * sin(i * x);
-//       canvas.drawCircle(Offset(dx, dy), radius, myPaint);
-//     }
-//   }
-//
-//   @override
-//   bool shouldRepaint(CustomPainter oldDelegate) {
-//     return true;
-//   }
-// }
-//
