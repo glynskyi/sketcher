@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:sketcher/sketcher.dart';
-//import 'package:sketcher/sketcher.dart' hide SketchTool;
-//import 'package:example/src/models/custom_sketch_tool.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key key, this.title}) : super(key: key);
@@ -50,10 +48,7 @@ class _HomePageState extends State<HomePage> {
           IconButton(
             icon: const Icon(Icons.redo),
             onPressed: _sketchController.isRedoAvailable ? () => _sketchController.redo() : null,
-          ),
-
-
-          // CustomPaint(
+          ),         
 
         ],
       ),
@@ -90,11 +85,6 @@ class _HomePageState extends State<HomePage> {
       child: Row(
         // mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          // IconButton(
-          //   icon: const Icon(Icons.checklist_rtl),
-          //   onPressed: () => _sketchController.setActiveTool(SketchTool.resetall),
-          // ),
-
           SizedBox(width: 20),
           IconButton(
             icon: const Icon(Icons.palette, color: Colors.redAccent),
@@ -137,11 +127,7 @@ class _HomePageState extends State<HomePage> {
             icon: const Icon(Icons.edit),//create_outlined
             onPressed: () => _sketchController.setActiveTool(SketchTool.pencil),
           ),
-    //       ElevatedButton(
-
-
-          //       ElevatedButton(
-
+    
         ],
       ),
     );
