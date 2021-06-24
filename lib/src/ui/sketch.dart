@@ -2,7 +2,9 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:sketcher/src/models/sketch_tool.dart';
 import 'package:sketcher/src/tools/eraser_controller.dart';
+import '../tools/drawline_controller.dart';
 import 'package:sketcher/src/tools/pencil_controller.dart';
+import '../tools/resetall_controller.dart';
 import 'package:sketcher/src/tools/tool_controller.dart';
 import 'package:sketcher/src/ui/gesture_action.dart';
 import 'package:sketcher/src/ui/sketch_controller.dart';
@@ -12,10 +14,13 @@ class Sketch extends StatefulWidget {
   final SketchController controller;
   final ScrollController scrollController;
 
+
   const Sketch({
     Key? key,
     required this.controller,
     required this.scrollController,
+
+
   }) : super(key: key);
 
   @override
@@ -42,17 +47,29 @@ class _SketchState extends State<Sketch> {
     if (_gestureAction == null) {
       _gestureAction = GestureAction.drawing;
       _gesturePointerDownEvent = translatedEvent;
-      if (_activeTool == SketchTool.pencil ||
-          _activeTool == SketchTool.highlighter) {
-        _toolController = PencilController(
-            widget.controller, () => widget.controller.notify());
-      }
-      if (_activeTool == SketchTool.eraser) {
-        _toolController = EraserController(
-            widget.controller, () => widget.controller.notify());
-      }
-      _toolController!.panStart(translatedEvent);
-    } else if (_gestureAction == GestureAction.drawing &&
+
+    if (_activeTool == SketchTool.pencil ||
+        _activeTool == SketchTool.highlighter) {
+      _toolController = PencilController(
+          widget.controller, () => widget.controller.notify());
+    }
+    if (_activeTool == SketchTool.spotlight) {
+      _toolController = DrawLineController(
+          widget.controller, () => widget.controller.notify());
+    }
+
+    if (_activeTool == SketchTool.eraser) {
+      _toolController = EraserController(
+          widget.controller, () => widget.controller.notify());
+    }
+//     if (_activeTool == SketchTool.resetall) {
+//       _toolController = ResetAllController(
+//           widget.controller, () => widget.controller.notify());
+//     }
+
+    
+    _toolController!.panStart(translatedEvent);}
+   else if (_gestureAction == GestureAction.drawing &&
         _isCloserToInitialGesture(translatedEvent)) {
       _gestureAction = GestureAction.scrolling;
       _initialScroll = widget.scrollController.offset;
@@ -152,6 +169,7 @@ class _SketchState extends State<Sketch> {
                       .toList(growable: false)),
                   CustomPaint(
                     painter: _toolController?.toolPainter,
+                    // foregroundPainter: _drawtoolController?.toolPainter,
                   ),
                 ],
               ),
