@@ -1,3 +1,7 @@
+## 1.1.16
+
+* added the single point drawing
+
 ## 1.1.15
 
 * fixed the eraser tool

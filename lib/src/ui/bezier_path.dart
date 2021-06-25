@@ -5,6 +5,16 @@ class BezierPath {
   BezierPath._();
 
   static void paintBezierPath(Canvas canvas, Stroke stroke) {
+    final _paint = Paint()
+      ..color = stroke.color
+      ..style = PaintingStyle.stroke
+      ..strokeCap = StrokeCap.round
+      ..strokeWidth = stroke.weight;
+
+    if (stroke.points.length == 1) {
+      canvas.drawLine(stroke.points.first, stroke.points.first, _paint);
+    }
+
     if (stroke.points.length < 2) {
       return;
     }
@@ -35,12 +45,6 @@ class BezierPath {
       }
     }
     // polyBezierPath.lineTo(firstKnot.getX(), firstKnot.getY());
-
-    final _paint = Paint()
-      ..color = stroke.color
-      ..style = PaintingStyle.stroke
-      ..strokeCap = StrokeCap.round
-      ..strokeWidth = stroke.weight;
 
     canvas.drawPath(polyBezierPath, _paint);
   }
