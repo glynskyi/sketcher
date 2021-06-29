@@ -4,7 +4,9 @@ import 'package:flutter/material.dart' as material;
 import 'package:sketcher/src/models/curve.dart';
 import 'package:sketcher/src/models/sketch_tool.dart';
 import 'package:sketcher/src/models/stroke_style.dart';
+import 'package:sketcher/src/ui/operations/eraser_operation.dart';
 import 'package:sketcher/src/ui/operations/operation.dart';
+import 'package:sketcher/src/ui/operations/resetall_operation.dart';
 import 'package:sketcher/src/ui/sketch.dart';
 import 'package:sketcher/src/ui/sketch_layer.dart';
 import 'package:sketcher/src/ui/static_painter.dart';
@@ -55,25 +57,14 @@ class SketchController extends material.ChangeNotifier {
     final operation = _undoStack.removeLast();
     _redoStack.add(operation);
     operation.undo(this);
-    //   if (reactivePainter.strokes.isEmpty) {
-    //     final staticPainter = staticPainters.removeLast();
-    //     final kanjiStokes = staticPainter.strokes;
-    //     _redoQueue.add(kanjiStokes.removeLast());
-    //     reactivePainter.strokes.addAll(kanjiStokes);
-    //   } else {
-    //     _redoQueue.add(reactivePainter.strokes.removeLast());
-    //   }
-    //   notifyListeners();
+   
   }
 
   void redo() {
     final operation = _redoStack.removeLast();
     _undoStack.add(operation);
     operation.redo(this);
-    //   if (_redoQueue.isNotEmpty) {
-    //     reactivePainter.strokes.add(_redoQueue.removeLast());
-    //     notifyListeners();
-    //   }
+   
   }
 
   void setActiveColor(Color color) {
@@ -120,16 +111,6 @@ class SketchController extends material.ChangeNotifier {
     notifyListeners();
   }
 
-  // bool commitStrokes() {
-  //   _redoQueue.clear();
-  //   if (reactivePainter.strokes.isNotEmpty) {
-  //     staticPainters.add(StaticPainter(List.of(reactivePainter.strokes)));
-  //     reactivePainter.strokes.clear();
-  //     return true;
-  //   } else {
-  //     return false;
-  //   }
-  // }
 
   void init(List<Curve> curves, Color backgroundColor) {
     _backgroundColor = backgroundColor;
@@ -142,5 +123,35 @@ class SketchController extends material.ChangeNotifier {
     _undoStack.add(operation);
     _redoStack.clear();
     operation.redo(this);
+  }
+
+ 
+  void resetAllOperation() {
+
+    //var operation;
+    final layers =
+    List<SketchLayer>.from(this.layers, growable: false);
+    final aliveCurves = <Curve>[];
+    final deletedCurves = <Curve>[];
+
+    List<EraserOperation> eraselist = <EraserOperation>[];
+
+    print("in _searchDelete");
+    for (final layer in layers) {
+      for (final curve in layer.painter.curves) {
+        deletedCurves.add(curve);
+      }
+      if (deletedCurves.isNotEmpty) {
+        print("deleted curves: $deletedCurves");
+        final operation =
+        EraserOperation(layer, aliveCurves, this.nextLayerId);
+
+        eraselist.add(operation);
+      }
+    }   
+    ResetAllOperation resetOperation = ResetAllOperation(eraselist);
+    this.commitOperation(resetOperation);
+    notify();
+
   }
 }
