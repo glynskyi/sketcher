@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sketcher/sketcher.dart';
 
+
 class HomePage extends StatefulWidget {
   const HomePage({Key key, this.title}) : super(key: key);
 
@@ -16,7 +17,7 @@ class _HomePageState extends State<HomePage> {
     void _selectColor(Color color) {
     _sketchController.setActiveColor(color);
   }
-
+   List<Offset> _points = <Offset>[];
 
   @override
   void initState() {
@@ -32,13 +33,15 @@ class _HomePageState extends State<HomePage> {
         title: Text(widget.title),
         actions: [
           IconButton(
-            icon: const Icon(Icons.save),//check_circle_rounded
-            onPressed: _sketchController.isRedoAvailable ? () => _sketchController.redo() : null,
+            icon: const Icon(Icons.cleaning_services_rounded),// restart_alt
+            onPressed: () => _sketchController.resetAllOperation(),//_sketchController.setActiveTool(SketchTool.resetall),
+            //onPressed: () => _points.clear(),
           ),
-
           IconButton(
-            icon: const Icon(Icons.chrome_reader_mode),//check_circle_rounded
-            onPressed: _sketchController.isRedoAvailable ? () => _sketchController.redo() : null,
+            icon: const Icon(Icons.auto_fix_high),//all_out, auto_awesome_rounded,auto_fix_high,camera, camera_outlined
+            onPressed: () => _sketchController.setActiveTool(SketchTool.spotlight),
+
+
           ),
           SizedBox(width: 20),
           IconButton(
@@ -48,9 +51,10 @@ class _HomePageState extends State<HomePage> {
           IconButton(
             icon: const Icon(Icons.redo),
             onPressed: _sketchController.isRedoAvailable ? () => _sketchController.redo() : null,
-          ),         
+          ),
 
-        ],
+
+         ],
       ),
       body: Stack(
         fit: StackFit.expand,
@@ -85,6 +89,7 @@ class _HomePageState extends State<HomePage> {
       child: Row(
         // mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
+       
           SizedBox(width: 20),
           IconButton(
             icon: const Icon(Icons.palette, color: Colors.redAccent),
@@ -102,10 +107,7 @@ class _HomePageState extends State<HomePage> {
 
 
           const Spacer(),
-//           IconButton(
-//             icon: const Icon(Icons.cleaning_services_rounded),// restart_alt
-//             onPressed: () => _sketchController.setActiveTool(SketchTool.resetall),
-//           ),
+
           IconButton(
             icon: const Icon(Icons.blur_circular),// brightness_1_outlined,remove
             onPressed: () => _sketchController.setActiveTool(SketchTool.eraser),
@@ -115,19 +117,13 @@ class _HomePageState extends State<HomePage> {
             onPressed: () => _sketchController.setActiveTool(SketchTool.highlighter),
 
          ),
-            IconButton(
-            icon: const Icon(Icons.animation),//all_out, auto_awesome_rounded,auto_fix_high,camera, camera_outlined
-            onPressed: () => _sketchController.setActiveTool(SketchTool.spotlight),
-
-
-         ),
 
 
           IconButton(
             icon: const Icon(Icons.edit),//create_outlined
             onPressed: () => _sketchController.setActiveTool(SketchTool.pencil),
           ),
-    
+ 
         ],
       ),
     );
@@ -140,6 +136,9 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
+
+
+
 
 
 
