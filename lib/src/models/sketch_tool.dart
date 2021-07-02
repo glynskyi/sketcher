@@ -4,7 +4,7 @@ enum SketchTool {
   highlighter,
   eraser,
   spotlight,
-   //resetall
+  resetall
 }
 
 extension SketchToolExtension on SketchTool {
@@ -14,7 +14,7 @@ extension SketchToolExtension on SketchTool {
     required T Function(SketchTool) highlighter,
     required T Function(SketchTool) eraser,
     required T Function(SketchTool) spotlight,
-    //required T Function(SketchTool) resetall
+    required T Function(SketchTool) resetall
   }) {
     switch (this) {
       case SketchTool.none:
@@ -27,8 +27,8 @@ extension SketchToolExtension on SketchTool {
       return spotlight(this);
       case SketchTool.eraser:
         return eraser(this);
-      //case SketchTool.resetall:
-        //return resetall(this);
+      case SketchTool.resetall:
+        return resetall(this);
       default:
         throw ArgumentError.value(this, "map");
     }
@@ -39,7 +39,7 @@ extension SketchToolExtension on SketchTool {
         pencil: (_) => true,
         highlighter: (_) => true,
         eraser: (_) => false,
-        //resetall: (_) => false,
+        resetall: (_) => false,
        spotlight: (_) => true,
       );
 
@@ -49,6 +49,6 @@ extension SketchToolExtension on SketchTool {
         highlighter: (_) => true,
         spotlight: (_) => true,
         eraser: (_) => false,
-        //resetall: (_) => false,
+        resetall: (_) => false,
       );
 }
