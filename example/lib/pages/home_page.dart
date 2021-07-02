@@ -59,6 +59,13 @@ class _HomePageState extends State<HomePage> {
       body: Stack(
         fit: StackFit.expand,
         children: [
+           Container(
+                child:Text("hello, I am divya"),
+              decoration: const BoxDecoration(
+              image: DecorationImage(image: AssetImage("lib/assets/teststudy.gif"), fit: BoxFit.cover,),
+
+            ),
+            ),
           SingleChildScrollView(
             physics: const NeverScrollableScrollPhysics(),
             controller: _scrollController,
