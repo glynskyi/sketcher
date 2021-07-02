@@ -57,25 +57,14 @@ class SketchController extends material.ChangeNotifier {
     final operation = _undoStack.removeLast();
     _redoStack.add(operation);
     operation.undo(this);
-    //   if (reactivePainter.strokes.isEmpty) {
-    //     final staticPainter = staticPainters.removeLast();
-    //     final kanjiStokes = staticPainter.strokes;
-    //     _redoQueue.add(kanjiStokes.removeLast());
-    //     reactivePainter.strokes.addAll(kanjiStokes);
-    //   } else {
-    //     _redoQueue.add(reactivePainter.strokes.removeLast());
-    //   }
-    //   notifyListeners();
+    
   }
 
   void redo() {
     final operation = _redoStack.removeLast();
     _undoStack.add(operation);
     operation.redo(this);
-    //   if (_redoQueue.isNotEmpty) {
-    //     reactivePainter.strokes.add(_redoQueue.removeLast());
-    //     notifyListeners();
-    //   }
+  
   }
 
   void setActiveColor(Color color) {
@@ -122,16 +111,7 @@ class SketchController extends material.ChangeNotifier {
     notifyListeners();
   }
 
-  // bool commitStrokes() {
-  //   _redoQueue.clear();
-  //   if (reactivePainter.strokes.isNotEmpty) {
-  //     staticPainters.add(StaticPainter(List.of(reactivePainter.strokes)));
-  //     reactivePainter.strokes.clear();
-  //     return true;
-  //   } else {
-  //     return false;
-  //   }
-  // }
+  
 
   void init(List<Curve> curves, Color backgroundColor) {
     _backgroundColor = backgroundColor;
