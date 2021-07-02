@@ -6,9 +6,17 @@ class IconPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = Colors.red
-      ..strokeWidth = 5
-      ..style = PaintingStyle.stroke;
+      ..shader=const RadialGradient(
+        colors:[
+          Colors.red,
+          Colors.white,
+        ],) .createShader(Rect.fromCircle(
+        center: offset,
+        radius: radius,
+      ))
+      //..color = Colors.deepOrangeAccent
+      ..strokeWidth = 1
+      ..style = PaintingStyle.fill;
 
     canvas.drawCircle(
       offset,
