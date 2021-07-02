@@ -2,13 +2,12 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:sketcher/src/models/sketch_tool.dart';
 import 'package:sketcher/src/tools/eraser_controller.dart';
-import '../tools/drawline_controller.dart';
 import 'package:sketcher/src/tools/pencil_controller.dart';
 import '../tools/resetall_controller.dart';
 import 'package:sketcher/src/tools/tool_controller.dart';
 import 'package:sketcher/src/ui/gesture_action.dart';
 import 'package:sketcher/src/ui/sketch_controller.dart';
-
+import '../tools/spotlight_controller.dart';
 /// A widget that provides a canvas on which a user makes handwriting.
 class Sketch extends StatefulWidget {
   final SketchController controller;
@@ -54,7 +53,7 @@ class _SketchState extends State<Sketch> {
           widget.controller, () => widget.controller.notify());
     }
     if (_activeTool == SketchTool.spotlight) {
-      _toolController = DrawLineController(
+      _toolController = SpotLightController(
           widget.controller, () => widget.controller.notify());
     }
 
@@ -62,10 +61,10 @@ class _SketchState extends State<Sketch> {
       _toolController = EraserController(
           widget.controller, () => widget.controller.notify());
     }
-//     if (_activeTool == SketchTool.resetall) {
-//       _toolController = ResetAllController(
-//           widget.controller, () => widget.controller.notify());
-//     }
+    if (_activeTool == SketchTool.resetall) {
+      _toolController = ResetAllController(
+          widget.controller, () => widget.controller.notify());
+    }
 
     
     _toolController!.panStart(translatedEvent);}
