@@ -61,11 +61,7 @@ class _SketchState extends State<Sketch> {
       _toolController = EraserController(
           widget.controller, () => widget.controller.notify());
     }
-    if (_activeTool == SketchTool.resetall) {
-      _toolController = ResetAllController(
-          widget.controller, () => widget.controller.notify());
-    }
-
+    
     
     _toolController!.panStart(translatedEvent);}
    else if (_gestureAction == GestureAction.drawing &&
