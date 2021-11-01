@@ -17,8 +17,9 @@ class _PredictionArenaState extends State<_PredictionArena> {
       onPointerMove: onPointerMove,
       onPointerUp: onPointerUp,
       child: CustomPaint(
-          size: const Size(double.infinity, double.infinity),
-          painter: _painter),
+        size: Size.infinite,
+        painter: _painter,
+      ),
     );
   }
 

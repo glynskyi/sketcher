@@ -1,6 +1,3 @@
-import 'dart:ui';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 // ignore: unused_element
@@ -62,7 +59,11 @@ class _QuickPainter extends ChangeNotifier implements CustomPainter {
       for (var i = 0; i < n; i++) {
         final targetKnot = knots[i + 1];
         appendCurveToPath(
-            polyBezierPath, controlPoints[i], controlPoints[n + i], targetKnot);
+          polyBezierPath,
+          controlPoints[i],
+          controlPoints[n + i],
+          targetKnot,
+        );
       }
     }
 
@@ -168,9 +169,19 @@ class _QuickPainter extends ChangeNotifier implements CustomPainter {
   }
 
   void appendCurveToPath(
-      Path path, EPointF control1, EPointF control2, EPointF targetKnot) {
-    path.cubicTo(control1.getX(), control1.getY(), control2.getX(),
-        control2.getY(), targetKnot.getX(), targetKnot.getY());
+    Path path,
+    EPointF control1,
+    EPointF control2,
+    EPointF targetKnot,
+  ) {
+    path.cubicTo(
+      control1.getX(),
+      control1.getY(),
+      control2.getX(),
+      control2.getY(),
+      targetKnot.getX(),
+      targetKnot.getY(),
+    );
   }
 
 //    for (var point in _allPoints) {

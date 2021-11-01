@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sketcher/sketcher.dart';
@@ -56,9 +55,10 @@ void main() {
 
     test('should remove a stroke', () {
       final sketchController = SketchController();
-      const stroke = Stroke([Offset(0, 0), Offset(10, 10)], Colors.red, 1);
+      const stroke = Stroke([Offset.zero, Offset(10, 10)], Colors.red, 1);
       sketchController.commitOperation(
-          StrokeOperation(stroke, sketchController.nextLayerId));
+        StrokeOperation(stroke, sketchController.nextLayerId),
+      );
       sketchController.setActiveTool(SketchTool.eraser);
       final eraser = EraserController(sketchController, () {});
       eraser.panStart(const PointerDownEvent());
@@ -72,7 +72,7 @@ void main() {
   group('StrokeOperation', () {
     test('should add a stroke', () {
       final sketchController = SketchController();
-      const stroke = Stroke([Offset(0, 0), Offset(10, 0)], Colors.red, 1.0);
+      const stroke = Stroke([Offset.zero, Offset(10, 0)], Colors.red, 1.0);
       final operation = StrokeOperation(stroke, sketchController.nextLayerId);
       sketchController.commitOperation(operation);
       expect(sketchController.layers, hasLength(1));
@@ -81,7 +81,7 @@ void main() {
 
     test('should undo the add operation', () {
       final sketchController = SketchController();
-      const stroke = Stroke([Offset(0, 0), Offset(10, 0)], Colors.red, 1.0);
+      const stroke = Stroke([Offset.zero, Offset(10, 0)], Colors.red, 1.0);
       final operation = StrokeOperation(stroke, sketchController.nextLayerId);
       sketchController.commitOperation(operation);
       sketchController.undo();
@@ -93,7 +93,7 @@ void main() {
     test('should export strokes', () {
       final sketchController = SketchController();
       const stroke =
-          Stroke([Offset(0, 0), Offset(10, 0)], Color(0xFFFF0000), 1.0);
+          Stroke([Offset.zero, Offset(10, 0)], Color(0xFFFF0000), 1.0);
       final operation = StrokeOperation(stroke, sketchController.nextLayerId);
       sketchController.commitOperation(operation);
       final exporter = SvgExporter();
@@ -106,7 +106,7 @@ void main() {
       final sketchController = SketchController();
       sketchController.init([], const Color(0xFF00FF00));
       const stroke =
-          Stroke([Offset(0, 0), Offset(10, 0)], Color(0xFFFF0000), 1.0);
+          Stroke([Offset.zero, Offset(10, 0)], Color(0xFFFF0000), 1.0);
       final operation = StrokeOperation(stroke, sketchController.nextLayerId);
       sketchController.commitOperation(operation);
       final exporter = SvgExporter();
@@ -120,20 +120,24 @@ void main() {
     test('should import strokes', () {
       final sketchController = SketchController();
       final importer = SvgImporter();
-      importer.import(sketchController,
-          '<?xml version="1.0"?><svg viewport-fill="#00FF00"><path d="M0 0 L10 0" stroke="#FF0000" stroke-opacity="1.0" stroke-width="1" fill="none"/></svg>');
+      importer.import(
+        sketchController,
+        '<?xml version="1.0"?><svg viewport-fill="#00FF00"><path d="M0 0 L10 0" stroke="#FF0000" stroke-opacity="1.0" stroke-width="1" fill="none"/></svg>',
+      );
       expect(sketchController.layers, hasLength(1));
       expect(sketchController.layers.first.painter.curves, hasLength(1));
       final stroke = sketchController.layers.first.painter.curves.first;
       expect((stroke as Stroke).color, const Color(0xFFFF0000));
-      expect(stroke.points, const [Offset(0, 0), Offset(10, 0)]);
+      expect(stroke.points, const [Offset.zero, Offset(10, 0)]);
       expect(stroke.weight, 1.0);
     });
     test('should import background color', () {
       final sketchController = SketchController();
       final importer = SvgImporter();
-      importer.import(sketchController,
-          '<?xml version="1.0"?><svg viewport-fill="#00FF00"><path d="M0 0 L10 0" stroke="#FF0000" stroke-opacity="1.0" stroke-width="1" fill="none"/></svg>');
+      importer.import(
+        sketchController,
+        '<?xml version="1.0"?><svg viewport-fill="#00FF00"><path d="M0 0 L10 0" stroke="#FF0000" stroke-opacity="1.0" stroke-width="1" fill="none"/></svg>',
+      );
       expect(sketchController.backgroundColor, const Color(0xFF00FF00));
     });
   });

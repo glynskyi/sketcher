@@ -10,22 +10,30 @@ import 'package:xml/xml.dart';
 /// A utility class for decoding a [SketchController] to SVG data
 class SvgExporter implements Exporter {
   @override
-  String export(SketchController controller,
-      {bool exportBackgroundColor = false, int precision = 2}) {
+  String export(
+    SketchController controller, {
+    bool exportBackgroundColor = false,
+    int precision = 2,
+  }) {
     final builder = XmlBuilder();
     builder.processing('xml', 'version="1.0"');
-    builder.element("svg", nest: () {
-      if (exportBackgroundColor) {
-        builder.attribute("viewport-fill",
-            _flutterColorToSvgColor(controller.backgroundColor.value));
-      }
-      _exportViewBox(builder, controller);
-      for (final layer in controller.layers) {
-        for (final stroke in layer.painter.curves) {
-          _toPath(builder, stroke, precision);
+    builder.element(
+      "svg",
+      nest: () {
+        if (exportBackgroundColor) {
+          builder.attribute(
+            "viewport-fill",
+            _flutterColorToSvgColor(controller.backgroundColor.value),
+          );
         }
-      }
-    });
+        _exportViewBox(builder, controller);
+        for (final layer in controller.layers) {
+          for (final stroke in layer.painter.curves) {
+            _toPath(builder, stroke, precision);
+          }
+        }
+      },
+    );
     return builder.buildDocument().outerXml;
   }
 
@@ -66,20 +74,25 @@ class SvgExporter implements Exporter {
     } else if (curve is Stroke) {
       final d = StringBuffer();
       d.write(
-          "M${curve.points.first.dx.toStringAsFixed(precision)} ${curve.points.first.dy.toStringAsFixed(precision)}");
+        "M${curve.points.first.dx.toStringAsFixed(precision)} ${curve.points.first.dy.toStringAsFixed(precision)}",
+      );
       for (final point in curve.points.skip(1)) {
         d.write(
-            " L${point.dx.toStringAsFixed(precision)} ${point.dy.toStringAsFixed(precision)}");
+          " L${point.dx.toStringAsFixed(precision)} ${point.dy.toStringAsFixed(precision)}",
+        );
       }
-      builder.element("path", attributes: {
-        "id": "sketcher-v1",
-        "d": d.toString(),
-        "stroke": _flutterColorToSvgColor(curve.color.value),
-        "stroke-opacity": curve.color.opacity.toString(),
-        "stroke-width": curve.weight.toStringAsFixed(0),
-        "stroke-linecap": "round",
-        "fill": "none"
-      });
+      builder.element(
+        "path",
+        attributes: {
+          "id": "sketcher-v1",
+          "d": d.toString(),
+          "stroke": _flutterColorToSvgColor(curve.color.value),
+          "stroke-opacity": curve.color.opacity.toString(),
+          "stroke-width": curve.weight.toStringAsFixed(0),
+          "stroke-linecap": "round",
+          "fill": "none"
+        },
+      );
     } else {
       throw ArgumentError.value(curve, "curve", "Unknown curve type");
     }

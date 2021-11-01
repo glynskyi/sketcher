@@ -9,8 +9,10 @@ class StaticPainter extends CustomPainter {
   final Rect bounds;
 
   StaticPainter(this.curves)
-      : bounds = curves.fold<Rect>(const Rect.fromLTWH(0, 0, 0, 0),
-            (bounds, curve) => bounds.expandToInclude(curve.bounds));
+      : bounds = curves.fold<Rect>(
+          Rect.zero,
+          (bounds, curve) => bounds.expandToInclude(curve.bounds),
+        );
 
   @override
   void paint(Canvas canvas, Size size) {

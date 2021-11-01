@@ -1,3 +1,7 @@
+## 1.1.17
+
+* removed the Flutter version restrictions
+
 ## 1.1.16
 
 * added the single point drawing

@@ -1,4 +1,3 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:sketcher/src/models/sketch_tool.dart';
 import 'package:sketcher/src/tools/eraser_controller.dart';
@@ -34,7 +33,8 @@ class _SketchState extends State<Sketch> {
 
   T translate<T extends PointerEvent>(T originEvent) {
     return originEvent.transformed(
-        originEvent.transform!.clone()..leftTranslate(0.0, _offset)) as T;
+      originEvent.transform!.clone()..leftTranslate(0.0, _offset),
+    ) as T;
   }
 
   void panStart(PointerDownEvent event) {
@@ -45,11 +45,15 @@ class _SketchState extends State<Sketch> {
       if (_activeTool == SketchTool.pencil ||
           _activeTool == SketchTool.highlighter) {
         _toolController = PencilController(
-            widget.controller, () => widget.controller.notify());
+          widget.controller,
+          () => widget.controller.notify(),
+        );
       }
       if (_activeTool == SketchTool.eraser) {
         _toolController = EraserController(
-            widget.controller, () => widget.controller.notify());
+          widget.controller,
+          () => widget.controller.notify(),
+        );
       }
       _toolController!.panStart(translatedEvent);
     } else if (_gestureAction == GestureAction.drawing &&
@@ -146,10 +150,16 @@ class _SketchState extends State<Sketch> {
               child: Stack(
                 fit: StackFit.expand,
                 children: [
-                  ...RepaintBoundary.wrapAll(widget.controller.layers
-                      .map((layer) => CustomPaint(
-                          key: ValueKey(layer.id), painter: layer.painter))
-                      .toList(growable: false)),
+                  ...RepaintBoundary.wrapAll(
+                    widget.controller.layers
+                        .map(
+                          (layer) => CustomPaint(
+                            key: ValueKey(layer.id),
+                            painter: layer.painter,
+                          ),
+                        )
+                        .toList(growable: false),
+                  ),
                   CustomPaint(
                     painter: _toolController?.toolPainter,
                   ),

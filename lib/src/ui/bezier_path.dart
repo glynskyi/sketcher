@@ -41,7 +41,11 @@ class BezierPath {
       for (var i = 0; i < n; i++) {
         final targetKnot = knots[i + 1];
         appendCurveToPath(
-            polyBezierPath, controlPoints[i], controlPoints[n + i], targetKnot);
+          polyBezierPath,
+          controlPoints[i],
+          controlPoints[n + i],
+          targetKnot,
+        );
       }
     }
     // polyBezierPath.lineTo(firstKnot.getX(), firstKnot.getY());
@@ -146,9 +150,19 @@ class BezierPath {
   }
 
   static void appendCurveToPath(
-      Path path, EPointF control1, EPointF control2, EPointF targetKnot) {
-    path.cubicTo(control1.getX(), control1.getY(), control2.getX(),
-        control2.getY(), targetKnot.getX(), targetKnot.getY());
+    Path path,
+    EPointF control1,
+    EPointF control2,
+    EPointF targetKnot,
+  ) {
+    path.cubicTo(
+      control1.getX(),
+      control1.getY(),
+      control2.getX(),
+      control2.getY(),
+      targetKnot.getX(),
+      targetKnot.getY(),
+    );
   }
 }
 

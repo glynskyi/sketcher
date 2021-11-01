@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 // ignore: unused_element
@@ -18,7 +17,10 @@ class _PaperPainter extends CustomPainter {
     for (var i = 0; i < size.width; i += gap) {
       for (var e = 0; e < size.height; e += gap) {
         canvas.drawCircle(
-            Offset(i.toDouble(), e.toDouble() + gap - offset), 1.2, _paint);
+          Offset(i.toDouble(), e.toDouble() + gap - offset),
+          1.2,
+          _paint,
+        );
       }
     }
   }

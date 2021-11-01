@@ -1,4 +1,3 @@
-import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:sketcher/src/models/curve.dart';
 import 'package:sketcher/src/tools/tool_controller.dart';
