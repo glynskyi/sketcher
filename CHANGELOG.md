@@ -1,3 +1,8 @@
+## 2.0.0
+
+* updated `flutter_svg` to 1.0.0
+* updated `path_parsing` to 1.0.0
+
 ## 1.1.17
 
 * removed the Flutter version restrictions
