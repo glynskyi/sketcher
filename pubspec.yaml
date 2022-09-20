@@ -1,6 +1,6 @@
 name: sketcher
 description: Sketch your ideas to life with the sketcher package. Provides the handwriting widget that allows to import\export content to SVG.
-version: 2.0.0
+version: 2.1.0
 homepage: https://github.com/glynskyi/sketcher
 
 environment:
