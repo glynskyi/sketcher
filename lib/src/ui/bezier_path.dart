@@ -5,21 +5,20 @@ class BezierPath {
   BezierPath._();
 
   static void paintBezierPath(Canvas canvas, Stroke stroke) {
-    final _paint = Paint()
+    final paint = Paint()
       ..color = stroke.color
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round
       ..strokeWidth = stroke.weight;
 
     if (stroke.points.length == 1) {
-      canvas.drawLine(stroke.points.first, stroke.points.first, _paint);
+      canvas.drawLine(stroke.points.first, stroke.points.first, paint);
     }
 
     if (stroke.points.length < 2) {
       return;
     }
-    final knots =
-        stroke.points.map((offset) => EPointF(offset.dx, offset.dy)).toList();
+    final knots = stroke.points.map((offset) => EPointF(offset.dx, offset.dy)).toList();
     if (knots.isEmpty) return;
 
     final polyBezierPath = Path();
@@ -50,7 +49,7 @@ class BezierPath {
     }
     // polyBezierPath.lineTo(firstKnot.getX(), firstKnot.getY());
 
-    canvas.drawPath(polyBezierPath, _paint);
+    canvas.drawPath(polyBezierPath, paint);
   }
 
   static List<EPointF> computeControlPoints(int n, List<EPointF> knots) {
@@ -69,17 +68,13 @@ class BezierPath {
     newTarget[0] = target[0].scaleBy(1 / mainDiag[0]);
 
     for (var i = 1; i < n - 1; i++) {
-      newUpperDiag[i] = upperDiag[i] /
-          (mainDiag[i] - lowerDiag[i - 1] * newUpperDiag[i - 1]!);
+      newUpperDiag[i] = upperDiag[i] / (mainDiag[i] - lowerDiag[i - 1] * newUpperDiag[i - 1]!);
     }
 
     for (var i = 1; i < n; i++) {
-      final targetScale =
-          1 / (mainDiag[i] - lowerDiag[i - 1] * newUpperDiag[i - 1]!);
+      final targetScale = 1 / (mainDiag[i] - lowerDiag[i - 1] * newUpperDiag[i - 1]!);
 
-      newTarget[i] =
-          (target[i].minus(newTarget[i - 1]!.scaleBy(lowerDiag[i - 1])))
-              .scaleBy(targetScale);
+      newTarget[i] = (target[i].minus(newTarget[i - 1]!.scaleBy(lowerDiag[i - 1]))).scaleBy(targetScale);
     }
 
     // backward sweep for control points c_i,0:

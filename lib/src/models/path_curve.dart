@@ -1,11 +1,10 @@
 import 'dart:ui';
 
-import 'package:flutter_svg/src/svg/colors.dart'; // ignore: implementation_imports
+import 'package:flutter_svg/src/avd/xml_parsers.dart' show parseColor; // ignore: implementation_imports
 import 'package:ktx/ktx.dart';
 import 'package:path_parsing/path_parsing.dart';
+import 'package:sketcher/src/models/curve.dart';
 import 'package:xml/xml.dart';
-
-import 'curve.dart';
 
 class PathCurve extends Curve {
   final XmlNode originPath;
@@ -19,27 +18,20 @@ class PathCurve extends Curve {
   PathCurve(this.originPath) {
     final visitor = _PathVisitor();
     // fill path
-    if (originPath.getAttribute("fill") != null &&
-        originPath.getAttribute("fill") != "none") {
+    if (originPath.getAttribute("fill") != null && originPath.getAttribute("fill") != "none") {
       style = PaintingStyle.fill;
       stokeWidth = 0;
       final rawColor = parseColor(originPath.getAttribute("fill"));
-      final opacity =
-          originPath.getAttribute("fill-opacity")?.let(double.parse);
-      color = rawColor?.withOpacity(opacity ?? 1) ??
-          const Color.fromARGB(255, 0, 0, 0);
+      final opacity = originPath.getAttribute("fill-opacity")?.let(double.parse);
+      color = rawColor?.withOpacity(opacity ?? 1) ?? const Color.fromARGB(255, 0, 0, 0);
     }
     // stoke path
-    else if (originPath.getAttribute("stroke") != null &&
-        originPath.getAttribute("stroke") != "none") {
+    else if (originPath.getAttribute("stroke") != null && originPath.getAttribute("stroke") != "none") {
       style = PaintingStyle.stroke;
-      stokeWidth =
-          originPath.getAttribute("stroke-width")?.let(double.parse) ?? 1;
+      stokeWidth = originPath.getAttribute("stroke-width")?.let(double.parse) ?? 1;
       final rawColor = parseColor(originPath.getAttribute("stroke"));
-      final opacity =
-          originPath.getAttribute("stroke-opacity")?.let(double.parse);
-      color = rawColor?.withOpacity(opacity ?? 1) ??
-          const Color.fromARGB(255, 0, 0, 0);
+      final opacity = originPath.getAttribute("stroke-opacity")?.let(double.parse);
+      color = rawColor?.withOpacity(opacity ?? 1) ?? const Color.fromARGB(255, 0, 0, 0);
     }
     // default path
     else {
