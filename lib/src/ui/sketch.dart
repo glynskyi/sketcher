@@ -18,7 +18,7 @@ class Sketch extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _SketchState createState() => _SketchState();
+  State<Sketch> createState() => _SketchState();
 }
 
 class _SketchState extends State<Sketch> {
@@ -42,8 +42,7 @@ class _SketchState extends State<Sketch> {
     if (_gestureAction == null) {
       _gestureAction = GestureAction.drawing;
       _gesturePointerDownEvent = translatedEvent;
-      if (_activeTool == SketchTool.pencil ||
-          _activeTool == SketchTool.highlighter) {
+      if (_activeTool == SketchTool.pencil || _activeTool == SketchTool.highlighter) {
         _toolController = PencilController(
           widget.controller,
           () => widget.controller.notify(),
@@ -56,8 +55,7 @@ class _SketchState extends State<Sketch> {
         );
       }
       _toolController!.panStart(translatedEvent);
-    } else if (_gestureAction == GestureAction.drawing &&
-        _isCloserToInitialGesture(translatedEvent)) {
+    } else if (_gestureAction == GestureAction.drawing && _isCloserToInitialGesture(translatedEvent)) {
       _gestureAction = GestureAction.scrolling;
       _initialScroll = widget.scrollController.offset;
       _toolController!.panReset();
@@ -66,9 +64,7 @@ class _SketchState extends State<Sketch> {
   }
 
   bool _isCloserToInitialGesture(PointerDownEvent details) {
-    return (details.timeStamp - _gesturePointerDownEvent!.timeStamp)
-            .inMilliseconds <
-        400;
+    return (details.timeStamp - _gesturePointerDownEvent!.timeStamp).inMilliseconds < 400;
   }
 
   void panUpdate(PointerMoveEvent event) {
@@ -80,8 +76,7 @@ class _SketchState extends State<Sketch> {
       _toolController?.panUpdate(translatedEvent);
     } else if (_gestureAction == GestureAction.scrolling) {
       if (_gesturePointerDownEvent?.pointer == translatedEvent.pointer) {
-        final offset =
-            _gesturePointerDownEvent!.position - translatedEvent.position;
+        final offset = _gesturePointerDownEvent!.position - translatedEvent.position;
         widget.scrollController.jumpTo(_initialScroll! + offset.dy / 2);
       }
     }
@@ -140,7 +135,7 @@ class _SketchState extends State<Sketch> {
   Widget build(BuildContext context) {
     return IgnorePointer(
       ignoring: _activeTool == SketchTool.none,
-      child: Container(
+      child: ColoredBox(
         color: widget.controller.backgroundColor,
         child: Stack(
           fit: StackFit.expand,
