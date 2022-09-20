@@ -1,3 +1,8 @@
+## 2.1.0
+
+* updated `flutter_svg` to 1.1.0
+* updated `xml` to 6.1.0
+
 ## 2.0.0
 
 * updated `flutter_svg` to 1.0.0
