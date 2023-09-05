@@ -10,7 +10,6 @@ dependencies:
   equatable: ^2.0.3
   flutter:
     sdk: flutter
-  flutter_svg: ^1.1.0
   ktx: ^1.1.6
   path_parsing: ^1.0.0
   xml: ^6.1.0

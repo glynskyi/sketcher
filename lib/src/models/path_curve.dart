@@ -1,8 +1,8 @@
 import 'dart:ui';
 
-import 'package:flutter_svg/src/avd/xml_parsers.dart' show parseColor; // ignore: implementation_imports
 import 'package:ktx/ktx.dart';
 import 'package:path_parsing/path_parsing.dart';
+import 'package:sketcher/src/converter/xml_parsers/color_parser.dart';
 import 'package:sketcher/src/models/curve.dart';
 import 'package:xml/xml.dart';
 
