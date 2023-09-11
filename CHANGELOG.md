@@ -1,3 +1,7 @@
+## 2.2.0
+
+* removed the `flutter_svg` dependency
+
 ## 2.1.0
 
 * updated `flutter_svg` to 1.1.0
